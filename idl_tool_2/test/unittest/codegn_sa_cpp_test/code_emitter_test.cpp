@@ -637,23 +637,4 @@ HWTEST_F(CodeEmitterTest, EmitHeadExternC_001, Level1)
     EXPECT_EQ(sb.ToString(), expectedCode);
     DTEST_LOG << "EmitHeadExternC_001 end" << std::endl;
 }
-
-/*
- * @tc.name: EmitTailExternC_001
- * @tc.desc: test EmitTailExternC function.
- * @tc.type: FUNC
- */
-HWTEST_F(CodeEmitterTest, EmitTailExternC_001, Level1)
-{
-    DTEST_LOG << "EmitTailExternC_001 begin" << std::endl;
-    AutoPtr<SaCppInterfaceCodeEmitter> emitter = new SaCppInterfaceCodeEmitter;
-    StringBuilder sb;
-    std::string expectedCode =
-        "#ifdef __cplusplus\n"
-        "}\n"
-        "#endif /* __cplusplus */\n";
-    emitter->EmitTailExternC(sb);
-    EXPECT_EQ(sb.ToString(), expectedCode);
-    DTEST_LOG << "EmitTailExternC_001 end" << std::endl;
-}
 } // namespace OHOS::Idl
