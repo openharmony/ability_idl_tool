@@ -409,6 +409,10 @@ HWTEST_F(SaArrayTypeEmitterTest, EmitTsWriteVar_001, Level1)
     emitter.elementEmitter_->SetTypeName("long");
     expectedCode =
         "let fd.txtArray:Array<long> = fd.txt;\n"
+        "if (fd.txtArray.length > 102400) {\n"
+        "    console.log(\"The array size exceeds the security limit!\");\n"
+        "    return;\n"
+        "}\n"
         "parcel.writeInt(fd.txtArray.length);\n"
         "for (let index = 0; index < fd.txtArray.length; index++) {\n"
         "    parcel.writeSequenceable(fd.txt[index]);\n"
@@ -459,6 +463,10 @@ HWTEST_F(SaArrayTypeEmitterTest, EmitTsReadVar_001, Level1)
     emitter.elementEmitter_->SetTypeName("long");
     expectedCode =
         "let txtSize = parcel.readInt();\n"
+        "if (txtSize > 102400) {\n"
+        "    console.log(\"The array size exceeds the security limit!\");\n"
+        "    return false;\n"
+        "}\n"
         "let fd.txt:Array<long> = [];\n"
         "for (let index = 0; index < txtSize; index++) {\n"
         "    let fd.txtValue = new long();\n"
@@ -495,6 +503,10 @@ HWTEST_F(SaArrayTypeEmitterTest, EmitTsReadVar_002, Level1)
     emitter.elementEmitter_->SetTypeName("long");
     std::string expectedCode =
         "let fdSize = parcel.readInt();\n"
+        "if (fdSize > 102400) {\n"
+        "    console.log(\"The array size exceeds the security limit!\");\n"
+        "    return false;\n"
+        "}\n"
         "let fd:Array<long> = [];\n"
         "for (let index = 0; index < fdSize; index++) {\n"
         "    let fdValue = new long();\n"

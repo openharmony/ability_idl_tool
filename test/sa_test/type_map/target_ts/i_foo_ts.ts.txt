@@ -16,7 +16,7 @@
 import myseq from "./myseq";
 import myinterface from "./myinterface";
 
-export default interface IFoo {
+export default interface IFooTs {
     void_test_func(callback: void_test_funcCallback): void;
     bool_test_func(inParam: Map<boolean, boolean>, inoutParam: Map<boolean, boolean>, callback: bool_test_funcCallback): void;
     byte_test_func(inParam: Map<number, number>, inoutParam: Map<number, number>, callback: byte_test_funcCallback): void;

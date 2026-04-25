@@ -192,6 +192,9 @@ export default class FooTsStub extends rpc.RemoteObject implements IFooTs {
             }
             case FooTsStub.COMMAND_SEQ_TEST_FUNC: {
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 let inParamVar:Array<myseq> = [];
                 for (let index = 0; index < inParamVarSize; index++) {
                     let inParamVarValue = new myseq();
@@ -199,6 +202,9 @@ export default class FooTsStub extends rpc.RemoteObject implements IFooTs {
                     inParamVar.push(inParamVarValue);
                 }
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 let inoutParamVar:Array<myseq> = [];
                 for (let index = 0; index < inoutParamVarSize; index++) {
                     let inoutParamVarValue = new myseq();
@@ -210,16 +216,25 @@ export default class FooTsStub extends rpc.RemoteObject implements IFooTs {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
                             let outParamArray:Array<myseq> = outParam;
+                            if (outParamArray.length > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParamArray.length);
                             for (let index = 0; index < outParamArray.length; index++) {
                                 reply.writeSequenceable(outParam[index]);
                             }
                             let inoutParamArray:Array<myseq> = inoutParam;
+                            if (inoutParamArray.length > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParamArray.length);
                             for (let index = 0; index < inoutParamArray.length; index++) {
                                 reply.writeSequenceable(inoutParam[index]);
                             }
                             let returnValueArray:Array<myseq> = returnValue;
+                            if (returnValueArray.length > 102400) {
+                                return;
+                            }
                             reply.writeInt(returnValueArray.length);
                             for (let index = 0; index < returnValueArray.length; index++) {
                                 reply.writeSequenceable(returnValue[index]);
