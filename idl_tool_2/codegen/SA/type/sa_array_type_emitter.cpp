@@ -136,6 +136,10 @@ void SaArrayTypeEmitter::EmitTsWriteVar(const std::string &parcelName, const std
         case TypeKind::TYPE_SEQUENCEABLE: {
             sb.Append(prefix).AppendFormat(
                 "let %sArray:Array<%s> = %s;\n", name.c_str(), elementEmitter_->GetTypeName().c_str(), name.c_str());
+            sb.Append(prefix).AppendFormat("if (%sArray.length > 102400) {\n", name.c_str());
+            sb.Append(prefix).Append(TAB).Append("console.log(\"The array size exceeds the security limit!\");\n");
+            sb.Append(prefix).Append(TAB).Append("return;\n");
+            sb.Append(prefix).Append("}\n");
             sb.Append(prefix).AppendFormat("%s.writeInt(%sArray.length);\n", parcelName.c_str(), name.c_str());
             sb.Append(prefix).AppendFormat("for (let index = 0; index < %sArray.length; index++) {\n", name.c_str());
             sb.Append(prefix).Append(TAB).AppendFormat(
@@ -173,6 +177,10 @@ void SaArrayTypeEmitter::EmitTsReadVar(const std::string &parcelName, const std:
             break;
         case TypeKind::TYPE_SEQUENCEABLE:
             sb.Append(prefix).AppendFormat("let %sSize = %s.readInt();\n", useName.c_str(), parcelName.c_str());
+            sb.Append(prefix).AppendFormat("if (%sSize > 102400) {\n", useName.c_str());
+            sb.Append(prefix).Append(TAB).Append("console.log(\"The array size exceeds the security limit!\");\n");
+            sb.Append(prefix).Append(TAB).Append("return false;\n");
+            sb.Append(prefix).Append("}\n");
             sb.Append(prefix).AppendFormat("let %s:Array<%s> = [];\n", name.c_str(),
                 elementEmitter_->GetTypeName().c_str());
             sb.Append(prefix).AppendFormat("for (let index = 0; index < %sSize; index++) {\n", useName.c_str());

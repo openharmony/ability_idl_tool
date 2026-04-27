@@ -327,11 +327,17 @@ export default class FooTsProxy implements IFooTs {
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
         let inParamArray:Array<myseq> = inParam;
+        if (inParamArray.length > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParamArray.length);
         for (let index = 0; index < inParamArray.length; index++) {
             dataSequence.writeSequenceable(inParam[index]);
         }
         let inoutParamArray:Array<myseq> = inoutParam;
+        if (inoutParamArray.length > 102400) {
+            return;
+        }
         dataSequence.writeInt(inoutParamArray.length);
         for (let index = 0; index < inoutParamArray.length; index++) {
             dataSequence.writeSequenceable(inoutParam[index]);
@@ -347,6 +353,9 @@ export default class FooTsProxy implements IFooTs {
                     return;
                 }
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 let outParamVar:Array<myseq> = [];
                 for (let index = 0; index < outParamVarSize; index++) {
                     let outParamVarValue = new myseq();
@@ -354,6 +363,9 @@ export default class FooTsProxy implements IFooTs {
                     outParamVar.push(outParamVarValue);
                 }
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 let inoutParamVar:Array<myseq> = [];
                 for (let index = 0; index < inoutParamVarSize; index++) {
                     let inoutParamVarValue = new myseq();
@@ -361,6 +373,9 @@ export default class FooTsProxy implements IFooTs {
                     inoutParamVar.push(inoutParamVarValue);
                 }
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 let returnValueVar:Array<myseq> = [];
                 for (let index = 0; index < returnValueVarSize; index++) {
                     let returnValueVarValue = new myseq();
