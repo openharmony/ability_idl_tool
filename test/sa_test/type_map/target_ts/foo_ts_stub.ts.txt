@@ -13,28 +13,28 @@
  * limitations under the License.
  */
 
-import {void_test_funcCallback} from "./i_foo";
-import {bool_test_funcCallback} from "./i_foo";
-import {byte_test_funcCallback} from "./i_foo";
-import {short_test_funcCallback} from "./i_foo";
-import {int_test_funcCallback} from "./i_foo";
-import {long_test_funcCallback} from "./i_foo";
-import {string_test_funcCallback} from "./i_foo";
-import {float_test_funcCallback} from "./i_foo";
-import {double_test_funcCallback} from "./i_foo";
-import {seq_test_funcCallback} from "./i_foo";
-import {interface_test_funcCallback} from "./i_foo";
-import IFoo from "./i_foo";
+import {void_test_funcCallback} from "./i_foo_ts";
+import {bool_test_funcCallback} from "./i_foo_ts";
+import {byte_test_funcCallback} from "./i_foo_ts";
+import {short_test_funcCallback} from "./i_foo_ts";
+import {int_test_funcCallback} from "./i_foo_ts";
+import {long_test_funcCallback} from "./i_foo_ts";
+import {string_test_funcCallback} from "./i_foo_ts";
+import {float_test_funcCallback} from "./i_foo_ts";
+import {double_test_funcCallback} from "./i_foo_ts";
+import {seq_test_funcCallback} from "./i_foo_ts";
+import {interface_test_funcCallback} from "./i_foo_ts";
+import IFooTs from "./i_foo_ts";
 import rpc from "@ohos.rpc";
 import myseq from "./myseq";
 import myinterface from "./myinterface";
 import myinterfaceStub from "./myinterface_stub";
 
-export default class FooStub extends rpc.RemoteObject implements IFoo {
+export default class FooTsStub extends rpc.RemoteObject implements IFooTs {
     constructor(des: string) {
         super(des);
     }
-    
+
     async onRemoteMessageRequest(code: number, data:rpc.MessageSequence, reply:rpc.MessageSequence, option:rpc.MessageOption): Promise<boolean> {
         let localDescriptor = this.getDescriptor();
         let remoteDescriptor = data.readInterfaceToken();
@@ -44,7 +44,7 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
         }
         console.log("onRemoteMessageRequest called, code = " + code);
         switch(code) {
-            case FooStub.COMMAND_VOID_TEST_FUNC: {
+            case FooTsStub.COMMAND_VOID_TEST_FUNC: {
                 let promise = new Promise<void>((resolve,reject) => { 
                     this.void_test_func((errCode) => {
                         reply.writeInt(errCode);
@@ -54,9 +54,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_BOOL_TEST_FUNC: {
+            case FooTsStub.COMMAND_BOOL_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readInt() == 1 ? true : false;
                     let value = data.readInt() == 1 ? true : false;
@@ -64,6 +67,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readInt() == 1 ? true : false;
                     let value = data.readInt() == 1 ? true : false;
@@ -73,15 +79,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.bool_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeInt(key ? 1 : 0);
                                 reply.writeInt(value ? 1 : 0);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeInt(key ? 1 : 0);
                                 reply.writeInt(value ? 1 : 0);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -95,9 +110,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_BYTE_TEST_FUNC: {
+            case FooTsStub.COMMAND_BYTE_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readInt();
                     let value = data.readInt();
@@ -105,6 +123,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readInt();
                     let value = data.readInt();
@@ -114,15 +135,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.byte_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeInt(key);
                                 reply.writeInt(value);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeInt(key);
                                 reply.writeInt(value);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -136,9 +166,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_SHORT_TEST_FUNC: {
+            case FooTsStub.COMMAND_SHORT_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readInt();
                     let value = data.readInt();
@@ -146,6 +179,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readInt();
                     let value = data.readInt();
@@ -155,15 +191,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.short_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeInt(key);
                                 reply.writeInt(value);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeInt(key);
                                 reply.writeInt(value);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -177,9 +222,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_INT_TEST_FUNC: {
+            case FooTsStub.COMMAND_INT_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readInt();
                     let value = data.readInt();
@@ -187,6 +235,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readInt();
                     let value = data.readInt();
@@ -196,15 +247,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.int_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeInt(key);
                                 reply.writeInt(value);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeInt(key);
                                 reply.writeInt(value);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -218,9 +278,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_LONG_TEST_FUNC: {
+            case FooTsStub.COMMAND_LONG_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readLong();
                     let value = data.readLong();
@@ -228,6 +291,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readLong();
                     let value = data.readLong();
@@ -237,15 +303,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.long_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeLong(key);
                                 reply.writeLong(value);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeLong(key);
                                 reply.writeLong(value);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -259,9 +334,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_STRING_TEST_FUNC: {
+            case FooTsStub.COMMAND_STRING_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readString();
                     let value = data.readString();
@@ -269,6 +347,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readString();
                     let value = data.readString();
@@ -278,15 +359,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.string_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeString(key);
                                 reply.writeString(value);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeString(key);
                                 reply.writeString(value);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -300,9 +390,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_FLOAT_TEST_FUNC: {
+            case FooTsStub.COMMAND_FLOAT_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readFloat();
                     let value = data.readFloat();
@@ -310,6 +403,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readFloat();
                     let value = data.readFloat();
@@ -319,15 +415,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.float_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeFloat(key);
                                 reply.writeFloat(value);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeFloat(key);
                                 reply.writeFloat(value);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -341,9 +446,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_DOUBLE_TEST_FUNC: {
+            case FooTsStub.COMMAND_DOUBLE_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readDouble();
                     let value = data.readDouble();
@@ -351,6 +459,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readDouble();
                     let value = data.readDouble();
@@ -360,15 +471,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.double_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeDouble(key);
                                 reply.writeDouble(value);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeDouble(key);
                                 reply.writeDouble(value);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -382,9 +502,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_SEQ_TEST_FUNC: {
+            case FooTsStub.COMMAND_SEQ_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = new myseq();
                     data.readParcelable(key);
@@ -394,6 +517,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = new myseq();
                     data.readParcelable(key);
@@ -405,15 +531,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.seq_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeParcelable(key);
                                 reply.writeParcelable(value);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeParcelable(key);
                                 reply.writeParcelable(value);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -427,9 +562,12 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 await promise;
                 return true;
             }
-            case FooStub.COMMAND_INTERFACE_TEST_FUNC: {
+            case FooTsStub.COMMAND_INTERFACE_TEST_FUNC: {
                 let inParamVar = new Map();
                 let inParamVarSize = data.readInt();
+                if (inParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inParamVarSize; ++i) {
                     let key = data.readRemoteObject();
                     let value = data.readRemoteObject();
@@ -437,6 +575,9 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = data.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = data.readRemoteObject();
                     let value = data.readRemoteObject();
@@ -446,15 +587,24 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
                     this.interface_test_func(inParamVar, inoutParamVar, (errCode, returnValue, outParam, inoutParam) => {
                         reply.writeInt(errCode);
                         if (errCode == 0) {
+                            if (outParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(outParam.size);
                             for (let [key, value] of outParam) {
                                 reply.writeRemoteObject(key as myinterfaceStub);
                                 reply.writeRemoteObject(value as myinterfaceStub);
                             }
+                            if (inoutParam.size > 102400) {
+                                return;
+                            }
                             reply.writeInt(inoutParam.size);
                             for (let [key, value] of inoutParam) {
                                 reply.writeRemoteObject(key as myinterfaceStub);
                                 reply.writeRemoteObject(value as myinterfaceStub);
+                            }
+                            if (returnValue.size > 102400) {
+                                return;
                             }
                             reply.writeInt(returnValue.size);
                             for (let [key, value] of returnValue) {
@@ -475,7 +625,7 @@ export default class FooStub extends rpc.RemoteObject implements IFoo {
         }
         return false;
     }
-    
+
     void_test_func(callback: void_test_funcCallback): void{}
     bool_test_func(inParam: Map<boolean, boolean>, inoutParam: Map<boolean, boolean>, callback: bool_test_funcCallback): void{}
     byte_test_func(inParam: Map<number, number>, inoutParam: Map<number, number>, callback: byte_test_funcCallback): void{}

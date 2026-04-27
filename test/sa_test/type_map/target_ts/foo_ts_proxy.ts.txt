@@ -13,24 +13,24 @@
  * limitations under the License.
  */
 
-import {void_test_funcCallback} from "./i_foo";
-import {bool_test_funcCallback} from "./i_foo";
-import {byte_test_funcCallback} from "./i_foo";
-import {short_test_funcCallback} from "./i_foo";
-import {int_test_funcCallback} from "./i_foo";
-import {long_test_funcCallback} from "./i_foo";
-import {string_test_funcCallback} from "./i_foo";
-import {float_test_funcCallback} from "./i_foo";
-import {double_test_funcCallback} from "./i_foo";
-import {seq_test_funcCallback} from "./i_foo";
-import {interface_test_funcCallback} from "./i_foo";
-import IFoo from "./i_foo";
+import {void_test_funcCallback} from "./i_foo_ts";
+import {bool_test_funcCallback} from "./i_foo_ts";
+import {byte_test_funcCallback} from "./i_foo_ts";
+import {short_test_funcCallback} from "./i_foo_ts";
+import {int_test_funcCallback} from "./i_foo_ts";
+import {long_test_funcCallback} from "./i_foo_ts";
+import {string_test_funcCallback} from "./i_foo_ts";
+import {float_test_funcCallback} from "./i_foo_ts";
+import {double_test_funcCallback} from "./i_foo_ts";
+import {seq_test_funcCallback} from "./i_foo_ts";
+import {interface_test_funcCallback} from "./i_foo_ts";
+import IFooTs from "./i_foo_ts";
 import rpc from "@ohos.rpc";
 import myseq from "./myseq";
 import myinterface from "./myinterface";
 import myinterfaceStub from "./myinterface_stub";
 
-export default class FooProxy implements IFoo {
+export default class FooTsProxy implements IFooTs {
     constructor(proxy) {
         this.proxy = proxy;
     }
@@ -41,7 +41,7 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_VOID_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_VOID_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 callback(errCodeVar);
@@ -62,17 +62,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeInt(key ? 1 : 0);
             dataSequence.writeInt(value ? 1 : 0);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeInt(key ? 1 : 0);
             dataSequence.writeInt(value ? 1 : 0);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_BOOL_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_BOOL_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -84,6 +90,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readInt() == 1 ? true : false;
                     let value = result.reply.readInt() == 1 ? true : false;
@@ -91,6 +100,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readInt() == 1 ? true : false;
                     let value = result.reply.readInt() == 1 ? true : false;
@@ -98,6 +110,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readInt() == 1 ? true : false;
                     let value = result.reply.readInt() == 1 ? true : false;
@@ -121,17 +136,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeInt(key);
             dataSequence.writeInt(value);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeInt(key);
             dataSequence.writeInt(value);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_BYTE_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_BYTE_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -143,6 +164,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -150,6 +174,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -157,6 +184,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -180,17 +210,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeInt(key);
             dataSequence.writeInt(value);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeInt(key);
             dataSequence.writeInt(value);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_SHORT_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_SHORT_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -202,6 +238,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -209,6 +248,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -216,6 +258,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -239,17 +284,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeInt(key);
             dataSequence.writeInt(value);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeInt(key);
             dataSequence.writeInt(value);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_INT_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_INT_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -261,6 +312,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -268,6 +322,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -275,6 +332,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readInt();
                     let value = result.reply.readInt();
@@ -298,17 +358,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeLong(key);
             dataSequence.writeLong(value);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeLong(key);
             dataSequence.writeLong(value);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_LONG_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_LONG_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -320,6 +386,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readLong();
                     let value = result.reply.readLong();
@@ -327,6 +396,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readLong();
                     let value = result.reply.readLong();
@@ -334,6 +406,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readLong();
                     let value = result.reply.readLong();
@@ -357,17 +432,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeString(key);
             dataSequence.writeString(value);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeString(key);
             dataSequence.writeString(value);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_STRING_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_STRING_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -379,6 +460,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readString();
                     let value = result.reply.readString();
@@ -386,6 +470,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readString();
                     let value = result.reply.readString();
@@ -393,6 +480,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readString();
                     let value = result.reply.readString();
@@ -416,17 +506,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeFloat(key);
             dataSequence.writeFloat(value);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeFloat(key);
             dataSequence.writeFloat(value);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_FLOAT_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_FLOAT_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -438,6 +534,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readFloat();
                     let value = result.reply.readFloat();
@@ -445,6 +544,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readFloat();
                     let value = result.reply.readFloat();
@@ -452,6 +554,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readFloat();
                     let value = result.reply.readFloat();
@@ -475,17 +580,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeDouble(key);
             dataSequence.writeDouble(value);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeDouble(key);
             dataSequence.writeDouble(value);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_DOUBLE_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_DOUBLE_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -497,6 +608,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readDouble();
                     let value = result.reply.readDouble();
@@ -504,6 +618,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readDouble();
                     let value = result.reply.readDouble();
@@ -511,6 +628,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readDouble();
                     let value = result.reply.readDouble();
@@ -534,17 +654,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeParcelable(key);
             dataSequence.writeParcelable(value);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeParcelable(key);
             dataSequence.writeParcelable(value);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_SEQ_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_SEQ_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -556,6 +682,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = new myseq();
                     result.reply.readParcelable(key);
@@ -565,6 +694,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = new myseq();
                     result.reply.readParcelable(key);
@@ -574,6 +706,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = new myseq();
                     result.reply.readParcelable(key);
@@ -599,17 +734,23 @@ export default class FooProxy implements IFoo {
         let dataSequence = rpc.MessageSequence.create();
         let replySequence = rpc.MessageSequence.create();
         dataSequence.writeInterfaceToken(this.proxy.getDescriptor());
+        if (inParam.size > 102400) {
+            return;
+        }
         dataSequence.writeInt(inParam.size);
         for (let [key, value] of inParam) {
             dataSequence.writeRemoteObject(key as myinterfaceStub);
             dataSequence.writeRemoteObject(value as myinterfaceStub);
+        }
+        if (inoutParam.size > 102400) {
+            return;
         }
         dataSequence.writeInt(inoutParam.size);
         for (let [key, value] of inoutParam) {
             dataSequence.writeRemoteObject(key as myinterfaceStub);
             dataSequence.writeRemoteObject(value as myinterfaceStub);
         }
-        this.proxy.sendMessageRequest(FooProxy.COMMAND_INTERFACE_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
+        this.proxy.sendMessageRequest(FooTsProxy.COMMAND_INTERFACE_TEST_FUNC, dataSequence, replySequence, option).then((result: rpc.RequestResult) => {
             if (result.errCode === 0) {
                 let errCodeVar = result.reply.readInt();
                 if (errCodeVar != 0) {
@@ -621,6 +762,9 @@ export default class FooProxy implements IFoo {
                 }
                 let outParamVar = new Map();
                 let outParamVarSize = result.reply.readInt();
+                if (outParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < outParamVarSize; ++i) {
                     let key = result.reply.readRemoteObject();
                     let value = result.reply.readRemoteObject();
@@ -628,6 +772,9 @@ export default class FooProxy implements IFoo {
                 }
                 let inoutParamVar = new Map();
                 let inoutParamVarSize = result.reply.readInt();
+                if (inoutParamVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < inoutParamVarSize; ++i) {
                     let key = result.reply.readRemoteObject();
                     let value = result.reply.readRemoteObject();
@@ -635,6 +782,9 @@ export default class FooProxy implements IFoo {
                 }
                 let returnValueVar = new Map();
                 let returnValueVarSize = result.reply.readInt();
+                if (returnValueVarSize > 102400) {
+                    return false;
+                }
                 for (let i = 0; i < returnValueVarSize; ++i) {
                     let key = result.reply.readRemoteObject();
                     let value = result.reply.readRemoteObject();

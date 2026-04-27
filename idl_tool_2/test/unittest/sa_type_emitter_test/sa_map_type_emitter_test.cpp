@@ -435,6 +435,9 @@ HWTEST_F(SaMapTypeEmitterTest, EmitRustReadVar_001, Level1)
     std::string expectedCode =
         "let mut data = HashMap::new();\n"
         "let len = result.read()?;\n"
+        "if len > 102400 {\n"
+        "    return Err(-1);\n"
+        "}\n"
         "for i in 0..len {\n"
         "    let datak : i32 = result.read()?;\n"
         "    let datav : i32 = result.read()?;\n"
@@ -467,6 +470,9 @@ HWTEST_F(SaMapTypeEmitterTest, EmitRustWriteVar_001, Level1)
     emitter.SetValueEmitter(intEmitter);
     
     std::string expectedCode =
+        "if data.len() > 102400 {\n"
+        "    return Err(-1);\n"
+        "}\n"
         "result.write(&(data.len() as u32))?;\n"
         "for (key, value) in data.iter() {\n"
         "    result.write(&key)?;\n"
@@ -498,6 +504,10 @@ HWTEST_F(SaMapTypeEmitterTest, EmitTsWriteVar_001, Level1)
     emitter.SetValueEmitter(intEmitter);
 
     std::string expectedCode =
+        "if (data.size > 102400) {\n"
+        "    console.log(\"The map size exceeds the security limit!\");\n"
+        "    return;\n"
+        "}\n"
         "parcel.writeInt(data.size);\n"
         "for (let [key, value] of data) {\n"
         "    parcel.writeInt(key);\n"
@@ -532,6 +542,10 @@ HWTEST_F(SaMapTypeEmitterTest, EmitTsReadVar_001, Level1)
     std::string expectedCode =
         "let data.txt = new Map();\n"
         "let txtSize = parcel.readInt();\n"
+        "if (txtSize > 102400) {\n"
+        "    console.log(\"The map size exceeds the security limit!\");\n"
+        "    return false;\n"
+        "}\n"
         "for (let i = 0; i < txtSize; ++i) {\n"
         "    let key = parcel.readInt();\n"
         "    let value = parcel.readInt();\n"
@@ -566,6 +580,10 @@ HWTEST_F(SaMapTypeEmitterTest, EmitTsReadVar_002, Level1)
     std::string expectedCode =
         "let data = new Map();\n"
         "let dataSize = parcel.readInt();\n"
+        "if (dataSize > 102400) {\n"
+        "    console.log(\"The map size exceeds the security limit!\");\n"
+        "    return false;\n"
+        "}\n"
         "for (let i = 0; i < dataSize; ++i) {\n"
         "    let key = parcel.readInt();\n"
         "    let value = parcel.readInt();\n"

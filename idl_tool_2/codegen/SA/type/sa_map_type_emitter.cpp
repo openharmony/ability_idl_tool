@@ -131,6 +131,9 @@ void SaMapTypeEmitter::EmitRustReadVar(const std::string &result, const std::str
 {
     sb.Append(prefix).AppendFormat("let mut %s = HashMap::new();\n", name.c_str());
     sb.Append(prefix).AppendFormat("let len = %s.read()?;\n", result.c_str());
+    sb.Append(prefix).Append("if len > 102400 {\n");
+    sb.Append(prefix + "    ").Append("return Err(-1);\n");
+    sb.Append(prefix).Append("}\n");
     sb.Append(prefix).Append("for i in 0..len {\n");
     StringBuilder k;
     StringBuilder v;
@@ -146,6 +149,9 @@ void SaMapTypeEmitter::EmitRustReadVar(const std::string &result, const std::str
 void SaMapTypeEmitter::EmitRustWriteVar(const std::string &result, const std::string &name, StringBuilder &sb,
     const std::string &prefix) const
 {
+    sb.Append(prefix).AppendFormat("if %s.len() > 102400 {\n", name.c_str());
+    sb.Append(prefix + "    ").Append("return Err(-1);\n");
+    sb.Append(prefix).Append("}\n");
     sb.Append(prefix).AppendFormat("%s.write(&(%s.len() as u32))?;\n", result.c_str(), name.c_str());
     sb.Append(prefix).AppendFormat("for (key, value) in %s.iter() {\n", name.c_str());
     keyEmitter_->EmitRustWriteVar(result.c_str(), "key", sb, prefix + "    ");
@@ -156,6 +162,10 @@ void SaMapTypeEmitter::EmitRustWriteVar(const std::string &result, const std::st
 void SaMapTypeEmitter::EmitTsWriteVar(const std::string &parcelName, const std::string &name, StringBuilder &sb,
     const std::string &prefix) const
 {
+    sb.Append(prefix).AppendFormat("if (%s.size > 102400) {\n", name.c_str());
+    sb.Append(prefix).Append(TAB).Append("console.log(\"The map size exceeds the security limit!\");\n");
+    sb.Append(prefix).Append(TAB).Append("return;\n");
+    sb.Append(prefix).Append("}\n");
     sb.Append(prefix).AppendFormat("%s.writeInt(%s.size);\n", parcelName.c_str(), name.c_str());
     sb.Append(prefix).AppendFormat("for (let [key, value] of %s) {\n", name.c_str());
     keyEmitter_->EmitTsWriteVar(parcelName, "key", sb, prefix + TAB);
@@ -173,6 +183,10 @@ void SaMapTypeEmitter::EmitTsReadVar(const std::string &parcelName, const std::s
     }
     sb.Append(prefix).AppendFormat("let %s = new Map();\n", name.c_str());
     sb.Append(prefix).AppendFormat("let %sSize = %s.readInt();\n", useName.c_str(), parcelName.c_str());
+    sb.Append(prefix).AppendFormat("if (%sSize > 102400) {\n", useName.c_str());
+    sb.Append(prefix).Append(TAB).Append("console.log(\"The map size exceeds the security limit!\");\n");
+    sb.Append(prefix).Append(TAB).Append("return false;\n");
+    sb.Append(prefix).Append("}\n");
     sb.Append(prefix).AppendFormat("for (let i = 0; i < %sSize; ++i) {\n", useName.c_str());
     keyEmitter_->EmitTsReadVar(parcelName, "key", sb, prefix + TAB, TypeMode::PARAM_IN);
     valueEmitter_->EmitTsReadVar(parcelName, "value", sb, prefix + TAB, TypeMode::PARAM_IN);

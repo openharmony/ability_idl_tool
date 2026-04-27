@@ -82,6 +82,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         2 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : bool = data.read()?;
                 let in_paramv : bool = data.read()?;
@@ -89,6 +92,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : bool = data.read()?;
                 let out_paramv : bool = data.read()?;
@@ -96,12 +102,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : bool = data.read()?;
                 let inout_paramv : bool = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.bool_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -112,6 +124,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         3 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : i8 = data.read()?;
                 let in_paramv : i8 = data.read()?;
@@ -119,6 +134,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : i8 = data.read()?;
                 let out_paramv : i8 = data.read()?;
@@ -126,12 +144,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : i8 = data.read()?;
                 let inout_paramv : i8 = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.byte_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -142,6 +166,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         4 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : i16 = data.read()?;
                 let in_paramv : i16 = data.read()?;
@@ -149,6 +176,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : i16 = data.read()?;
                 let out_paramv : i16 = data.read()?;
@@ -156,12 +186,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : i16 = data.read()?;
                 let inout_paramv : i16 = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.short_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -172,6 +208,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         5 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : i32 = data.read()?;
                 let in_paramv : i32 = data.read()?;
@@ -179,6 +218,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : i32 = data.read()?;
                 let out_paramv : i32 = data.read()?;
@@ -186,12 +228,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : i32 = data.read()?;
                 let inout_paramv : i32 = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.int_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -202,6 +250,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         6 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : i64 = data.read()?;
                 let in_paramv : i64 = data.read()?;
@@ -209,6 +260,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : i64 = data.read()?;
                 let out_paramv : i64 = data.read()?;
@@ -216,12 +270,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : i64 = data.read()?;
                 let inout_paramv : i64 = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.long_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -232,6 +292,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         7 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : String = data.read()?;
                 let in_paramv : String = data.read()?;
@@ -239,6 +302,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : String = data.read()?;
                 let out_paramv : String = data.read()?;
@@ -246,12 +312,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : String = data.read()?;
                 let inout_paramv : String = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.string_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -262,6 +334,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         8 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : f32 = data.read()?;
                 let in_paramv : f32 = data.read()?;
@@ -269,6 +344,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : f32 = data.read()?;
                 let out_paramv : f32 = data.read()?;
@@ -276,12 +354,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : f32 = data.read()?;
                 let inout_paramv : f32 = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.float_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -292,6 +376,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         9 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : f64 = data.read()?;
                 let in_paramv : f64 = data.read()?;
@@ -299,6 +386,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : f64 = data.read()?;
                 let out_paramv : f64 = data.read()?;
@@ -306,12 +396,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : f64 = data.read()?;
                 let inout_paramv : f64 = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.double_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -322,6 +418,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         10 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : char = data.read()?;
                 let in_paramv : char = data.read()?;
@@ -329,6 +428,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : char = data.read()?;
                 let out_paramv : char = data.read()?;
@@ -336,12 +438,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : char = data.read()?;
                 let inout_paramv : char = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.char_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -352,6 +460,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         11 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : myseq = data.read()?;
                 let in_paramv : myseq = data.read()?;
@@ -359,6 +470,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : myseq = data.read()?;
                 let out_paramv : myseq = data.read()?;
@@ -366,12 +480,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : myseq = data.read()?;
                 let inout_paramv : myseq = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.seq_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -382,6 +502,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         12 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : myinterface = data.read()?;
                 let in_paramv : myinterface = data.read()?;
@@ -389,6 +512,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : myinterface = data.read()?;
                 let out_paramv : myinterface = data.read()?;
@@ -396,12 +522,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : myinterface = data.read()?;
                 let inout_paramv : myinterface = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.interface_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -412,6 +544,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         13 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : i32 = data.read()?;
                 let in_paramv : Vec<i32> = data.read()?;
@@ -419,6 +554,9 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : i32 = data.read()?;
                 let out_paramv : Vec<i32> = data.read()?;
@@ -426,12 +564,18 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : i32 = data.read()?;
                 let inout_paramv : Vec<i32> = data.read()?;
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.int_2_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
@@ -442,10 +586,16 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
         14 => {
             let mut in_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let in_paramk : i32 = data.read()?;
                 let mut in_paramv = HashMap::new();
                 let len = data.read()?;
+                if len > 102400 {
+                    return Err(-1);
+                }
                 for i in 0..len {
                     let in_paramvk : i32 = data.read()?;
                     let in_paramvv : Vec<i32> = data.read()?;
@@ -455,10 +605,16 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut out_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let out_paramk : i32 = data.read()?;
                 let mut out_paramv = HashMap::new();
                 let len = data.read()?;
+                if len > 102400 {
+                    return Err(-1);
+                }
                 for i in 0..len {
                     let out_paramvk : i32 = data.read()?;
                     let out_paramvv : Vec<i32> = data.read()?;
@@ -468,10 +624,16 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
             }
             let mut inout_param = HashMap::new();
             let len = data.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let inout_paramk : i32 = data.read()?;
                 let mut inout_paramv = HashMap::new();
                 let len = data.read()?;
+                if len > 102400 {
+                    return Err(-1);
+                }
                 for i in 0..len {
                     let inout_paramvk : i32 = data.read()?;
                     let inout_paramvv : Vec<i32> = data.read()?;
@@ -480,9 +642,15 @@ fn on_remote_request(stub: &dyn IFoo, code: u32, data: &BorrowedMsgParcel,
                 inout_param.insert(inout_paramk, inout_paramv);
             }
             let result = stub.map_test_func(&in_param, &out_param, &inout_param)?;
+            if result.len() > 102400 {
+                return Err(-1);
+            }
             reply.write(&(result.len() as u32))?;
             for (key, value) in result.iter() {
                 reply.write(&key)?;
+                if value.len() > 102400 {
+                    return Err(-1);
+                }
                 reply.write(&(value.len() as u32))?;
                 for (key, value) in value.iter() {
                     reply.write(&key)?;
@@ -562,15 +730,24 @@ impl IFoo for FooProxy {
 
     fn bool_test_func(&self, in_param: &HashMap<bool, bool>, out_param: &HashMap<bool, bool>, inout_param: &HashMap<bool, bool>) -> Result<HashMap<bool, bool>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -580,6 +757,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeBoolTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : bool = reply.read()?;
             let resultv : bool = reply.read()?;
@@ -590,15 +770,24 @@ impl IFoo for FooProxy {
 
     fn byte_test_func(&self, in_param: &HashMap<i8, i8>, out_param: &HashMap<i8, i8>, inout_param: &HashMap<i8, i8>) -> Result<HashMap<i8, i8>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -608,6 +797,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeByteTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : i8 = reply.read()?;
             let resultv : i8 = reply.read()?;
@@ -618,15 +810,24 @@ impl IFoo for FooProxy {
 
     fn short_test_func(&self, in_param: &HashMap<i16, i16>, out_param: &HashMap<i16, i16>, inout_param: &HashMap<i16, i16>) -> Result<HashMap<i16, i16>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -636,6 +837,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeShortTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : i16 = reply.read()?;
             let resultv : i16 = reply.read()?;
@@ -646,15 +850,24 @@ impl IFoo for FooProxy {
 
     fn int_test_func(&self, in_param: &HashMap<i32, i32>, out_param: &HashMap<i32, i32>, inout_param: &HashMap<i32, i32>) -> Result<HashMap<i32, i32>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -664,6 +877,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeIntTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : i32 = reply.read()?;
             let resultv : i32 = reply.read()?;
@@ -674,15 +890,24 @@ impl IFoo for FooProxy {
 
     fn long_test_func(&self, in_param: &HashMap<i64, i64>, out_param: &HashMap<i64, i64>, inout_param: &HashMap<i64, i64>) -> Result<HashMap<i64, i64>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -692,6 +917,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeLongTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : i64 = reply.read()?;
             let resultv : i64 = reply.read()?;
@@ -702,15 +930,24 @@ impl IFoo for FooProxy {
 
     fn string_test_func(&self, in_param: &HashMap<String, String>, out_param: &HashMap<String, String>, inout_param: &HashMap<String, String>) -> Result<HashMap<String, String>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -720,6 +957,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeStringTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : String = reply.read()?;
             let resultv : String = reply.read()?;
@@ -730,15 +970,24 @@ impl IFoo for FooProxy {
 
     fn float_test_func(&self, in_param: &HashMap<f32, f32>, out_param: &HashMap<f32, f32>, inout_param: &HashMap<f32, f32>) -> Result<HashMap<f32, f32>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -748,6 +997,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeFloatTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : f32 = reply.read()?;
             let resultv : f32 = reply.read()?;
@@ -758,15 +1010,24 @@ impl IFoo for FooProxy {
 
     fn double_test_func(&self, in_param: &HashMap<f64, f64>, out_param: &HashMap<f64, f64>, inout_param: &HashMap<f64, f64>) -> Result<HashMap<f64, f64>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -776,6 +1037,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeDoubleTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : f64 = reply.read()?;
             let resultv : f64 = reply.read()?;
@@ -786,15 +1050,24 @@ impl IFoo for FooProxy {
 
     fn char_test_func(&self, in_param: &HashMap<char, char>, out_param: &HashMap<char, char>, inout_param: &HashMap<char, char>) -> Result<HashMap<char, char>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -804,6 +1077,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeCharTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : char = reply.read()?;
             let resultv : char = reply.read()?;
@@ -814,15 +1090,24 @@ impl IFoo for FooProxy {
 
     fn seq_test_func(&self, in_param: &HashMap<myseq, myseq>, out_param: &HashMap<myseq, myseq>, inout_param: &HashMap<myseq, myseq>) -> Result<HashMap<myseq, myseq>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -832,6 +1117,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeSeqTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : myseq = reply.read()?;
             let resultv : myseq = reply.read()?;
@@ -842,15 +1130,24 @@ impl IFoo for FooProxy {
 
     fn interface_test_func(&self, in_param: &HashMap<myinterface, myinterface>, out_param: &HashMap<myinterface, myinterface>, inout_param: &HashMap<myinterface, myinterface>) -> Result<HashMap<myinterface, myinterface>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -860,6 +1157,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeInterfaceTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : myinterface = reply.read()?;
             let resultv : myinterface = reply.read()?;
@@ -870,15 +1170,24 @@ impl IFoo for FooProxy {
 
     fn int_2_test_func(&self, in_param: &HashMap<i32, Vec<i32>>, out_param: &HashMap<i32, Vec<i32>>, inout_param: &HashMap<i32, Vec<i32>>) -> Result<HashMap<i32, Vec<i32>>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
         }
+        if out_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
             data.write(&value)?;
+        }
+        if inout_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
@@ -888,6 +1197,9 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeInt2TestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : i32 = reply.read()?;
             let resultv : Vec<i32> = reply.read()?;
@@ -898,27 +1210,45 @@ impl IFoo for FooProxy {
 
     fn map_test_func(&self, in_param: &HashMap<i32, HashMap<i32, Vec<i32>>>, out_param: &HashMap<i32, HashMap<i32, Vec<i32>>>, inout_param: &HashMap<i32, HashMap<i32, Vec<i32>>>) -> Result<HashMap<i32, HashMap<i32, Vec<i32>>>> {
         let mut data = MsgParcel::new().expect("MsgParcel should success");
+        if in_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(in_param.len() as u32))?;
         for (key, value) in in_param.iter() {
             data.write(&key)?;
+            if value.len() > 102400 {
+                return Err(-1);
+            }
             data.write(&(value.len() as u32))?;
             for (key, value) in value.iter() {
                 data.write(&key)?;
                 data.write(&value)?;
             }
+        }
+        if out_param.len() > 102400 {
+            return Err(-1);
         }
         data.write(&(out_param.len() as u32))?;
         for (key, value) in out_param.iter() {
             data.write(&key)?;
+            if value.len() > 102400 {
+                return Err(-1);
+            }
             data.write(&(value.len() as u32))?;
             for (key, value) in value.iter() {
                 data.write(&key)?;
                 data.write(&value)?;
             }
         }
+        if inout_param.len() > 102400 {
+            return Err(-1);
+        }
         data.write(&(inout_param.len() as u32))?;
         for (key, value) in inout_param.iter() {
             data.write(&key)?;
+            if value.len() > 102400 {
+                return Err(-1);
+            }
             data.write(&(value.len() as u32))?;
             for (key, value) in value.iter() {
                 data.write(&key)?;
@@ -928,10 +1258,16 @@ impl IFoo for FooProxy {
         let reply = self.remote.send_request(IFooCode::CodeMapTestFunc as u32, &data, false)?;
         let mut result = HashMap::new();
         let len = reply.read()?;
+        if len > 102400 {
+            return Err(-1);
+        }
         for i in 0..len {
             let resultk : i32 = reply.read()?;
             let mut resultv = HashMap::new();
             let len = reply.read()?;
+            if len > 102400 {
+                return Err(-1);
+            }
             for i in 0..len {
                 let resultvk : i32 = reply.read()?;
                 let resultvv : Vec<i32> = reply.read()?;
