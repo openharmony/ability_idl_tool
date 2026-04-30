@@ -163,6 +163,10 @@ int32_t OHOS::HDI::Camera::V1_0::StreamOperatorProxy::IsStreamsSupported_(OHOS::
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (infos.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: infos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!streamOperatorData.WriteUint32(infos.size())) {
         HDF_LOGE("%{public}s: write infos size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -208,6 +212,10 @@ int32_t OHOS::HDI::Camera::V1_0::StreamOperatorProxy::CreateStreams_(const std::
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (streamInfos.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: streamInfos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!streamOperatorData.WriteUint32(streamInfos.size())) {
         HDF_LOGE("%{public}s: write streamInfos size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

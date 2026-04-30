@@ -888,6 +888,10 @@ int32_t OHOS::HDI::UserAuth::V1_0::UserAuthInterfaceProxy::BeginAuthentication_(
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (scheduleInfosSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: scheduleInfos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(scheduleInfosSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::UserAuth::V1_0::ScheduleInfo), HDF_ERR_INVALID_PARAM);
     scheduleInfos.clear();

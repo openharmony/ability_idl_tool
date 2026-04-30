@@ -194,6 +194,10 @@ bool FooInfoBlockMarshalling(OHOS::MessageParcel& data, const OHOS::HDI::Foo::V1
         return false;
     }
 
+    if (dataBlock.data15.size() > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: dataBlock.data15 size exceeds limit", __func__);
+        return false;
+    }
     if (!data.WriteUint32(dataBlock.data15.size())) {
         HDF_LOGE("%{public}s: write dataBlock.data15.size failed!", __func__);
         return false;
@@ -335,6 +339,10 @@ bool FooInfoBlockUnmarshalling(OHOS::MessageParcel& data, OHOS::HDI::Foo::V1_0::
     uint32_t data15Size = 0;
     if (!data.ReadUint32(data15Size)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return false;
+    }
+    if (data15Size > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: data15 size exceeds limit", __func__);
         return false;
     }
 

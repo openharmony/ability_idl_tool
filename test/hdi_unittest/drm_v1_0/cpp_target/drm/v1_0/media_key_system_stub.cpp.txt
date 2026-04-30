@@ -405,6 +405,10 @@ int32_t OHOS::HDI::Drm::V1_0::MediaKeySystemStub::MediaKeySystemStubGetStatistic
         return mediaKeySystemRet;
     }
 
+    if (statistics.size() > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: statistics size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!mediaKeySystemReply.WriteUint32(statistics.size())) {
         HDF_LOGE("%{public}s: write statistics failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -675,6 +679,10 @@ int32_t OHOS::HDI::Drm::V1_0::MediaKeySystemStub::MediaKeySystemStubGetOfflineMe
         return mediaKeySystemRet;
     }
 
+    if (mediaKeyIds.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: mediaKeyIds size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!mediaKeySystemReply.WriteUint32(mediaKeyIds.size())) {
         HDF_LOGE("%{public}s: write mediaKeyIds size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

@@ -238,6 +238,10 @@ int32_t OHOS::HDI::DistributedCamera::V1_0::DCameraProviderCallbackProxy::StartC
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (captureInfos.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: captureInfos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!dCameraProviderCallbackData.WriteUint32(captureInfos.size())) {
         HDF_LOGE("%{public}s: write captureInfos size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -314,6 +318,10 @@ int32_t OHOS::HDI::DistributedCamera::V1_0::DCameraProviderCallbackProxy::Update
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (settings.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: settings size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!dCameraProviderCallbackData.WriteUint32(settings.size())) {
         HDF_LOGE("%{public}s: write settings size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

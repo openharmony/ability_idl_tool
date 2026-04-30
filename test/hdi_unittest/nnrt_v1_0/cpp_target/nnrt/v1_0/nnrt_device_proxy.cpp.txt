@@ -432,6 +432,10 @@ int32_t OHOS::HDI::Nnrt::V1_0::NnrtDeviceProxy::GetSupportedOperation_(const OHO
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (opsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: ops size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(opsSize, >, HDI_BUFF_MAX_SIZE / sizeof(bool), HDF_ERR_INVALID_PARAM);
     ops.clear();
@@ -662,6 +666,10 @@ int32_t OHOS::HDI::Nnrt::V1_0::NnrtDeviceProxy::PrepareModelFromModelCache_(cons
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (modelCache.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: modelCache size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!nnrtDeviceData.WriteUint32(modelCache.size())) {
         HDF_LOGE("%{public}s: write modelCache size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

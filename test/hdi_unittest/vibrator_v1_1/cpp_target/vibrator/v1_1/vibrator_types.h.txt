@@ -24,6 +24,14 @@
 #define HDI_BUFF_MAX_SIZE (1024 * 200)
 #endif
 
+#ifndef HDI_VECTOR_MAX_SIZE
+#define HDI_VECTOR_MAX_SIZE 102400
+#endif
+
+#ifndef HDI_MAP_MAX_SIZE
+#define HDI_MAP_MAX_SIZE 102400
+#endif
+
 #ifndef HDI_CHECK_VALUE_RETURN
 #define HDI_CHECK_VALUE_RETURN(lv, compare, rv, ret) do { \
     if ((lv) compare (rv)) { \

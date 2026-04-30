@@ -118,6 +118,10 @@ int32_t OHOS::HDI::FingerprintAuth::V1_0::FingerprintAuthInterfaceStub::Fingerpr
         return fingerprintAuthInterfaceRet;
     }
 
+    if (executorList.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: executorList size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!fingerprintAuthInterfaceReply.WriteUint32(executorList.size())) {
         HDF_LOGE("%{public}s: write executorList size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

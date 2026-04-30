@@ -356,6 +356,10 @@ int32_t OHOS::HDI::Drm::V1_0::MediaKeySystemProxy::GetStatistics_(std::map<std::
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (statisticsSize > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: statistics size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     for (uint32_t i = 0; i < statisticsSize; ++i) {
         const char* key0Cp = mediaKeySystemReply.ReadCString();
@@ -625,6 +629,10 @@ int32_t OHOS::HDI::Drm::V1_0::MediaKeySystemProxy::GetOfflineMediaKeyIds_(std::v
     uint32_t mediaKeyIdsSize = 0;
     if (!mediaKeySystemReply.ReadUint32(mediaKeyIdsSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (mediaKeyIdsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: mediaKeyIds size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 

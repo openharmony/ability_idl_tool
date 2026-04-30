@@ -223,6 +223,10 @@ int32_t OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceStub::C
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (cellfenceSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: cellfence size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(cellfenceSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceRequest), HDF_ERR_INVALID_PARAM);
     cellfence.clear();

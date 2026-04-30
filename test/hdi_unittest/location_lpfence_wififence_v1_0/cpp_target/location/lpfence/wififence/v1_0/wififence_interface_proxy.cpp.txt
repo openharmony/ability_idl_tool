@@ -285,6 +285,10 @@ int32_t OHOS::HDI::Location::Lpfence::Wififence::V1_0::WififenceInterfaceProxy::
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (wififence.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: wififence size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!wififenceInterfaceData.WriteUint32(wififence.size())) {
         HDF_LOGE("%{public}s: write wififence size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

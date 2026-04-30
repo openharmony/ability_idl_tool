@@ -175,6 +175,10 @@ int32_t OHOS::HDI::Sensor::V1_0::SensorInterfaceStub::SensorInterfaceStubGetAllS
         return sensorInterfaceRet;
     }
 
+    if (info.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: info size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!sensorInterfaceReply.WriteUint32(info.size())) {
         HDF_LOGE("%{public}s: write info size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -468,6 +472,10 @@ int32_t OHOS::HDI::Sensor::V1_0::SensorInterfaceStub::SensorInterfaceStubReadDat
         return sensorInterfaceRet;
     }
 
+    if (event.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: event size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!sensorInterfaceReply.WriteUint32(event.size())) {
         HDF_LOGE("%{public}s: write event size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
