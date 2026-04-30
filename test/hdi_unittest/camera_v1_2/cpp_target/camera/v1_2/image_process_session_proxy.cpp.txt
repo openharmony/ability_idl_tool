@@ -139,6 +139,10 @@ int32_t OHOS::HDI::Camera::V1_2::ImageProcessSessionProxy::GetPendingImages_(std
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (imageIdsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: imageIds size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(imageIdsSize, >, HDI_BUFF_MAX_SIZE / sizeof(std::string), HDF_ERR_INVALID_PARAM);
     imageIds.clear();

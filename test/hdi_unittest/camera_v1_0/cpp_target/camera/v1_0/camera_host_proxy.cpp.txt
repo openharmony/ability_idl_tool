@@ -273,6 +273,10 @@ int32_t OHOS::HDI::Camera::V1_0::CameraHostProxy::GetCameraIds_(std::vector<std:
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (cameraIdsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: cameraIds size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(cameraIdsSize, >, HDI_BUFF_MAX_SIZE / sizeof(std::string), HDF_ERR_INVALID_PARAM);
     cameraIds.clear();

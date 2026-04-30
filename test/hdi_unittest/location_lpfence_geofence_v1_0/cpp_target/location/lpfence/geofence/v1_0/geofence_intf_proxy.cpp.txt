@@ -330,6 +330,10 @@ int32_t OHOS::HDI::Location::Lpfence::Geofence::V1_0::GeofenceIntfProxy::AddPoly
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (polygonGeofences.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: polygonGeofences size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!geofenceIntfData.WriteUint32(polygonGeofences.size())) {
         HDF_LOGE("%{public}s: write polygonGeofences size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

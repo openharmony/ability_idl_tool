@@ -175,6 +175,10 @@ int32_t OHOS::HDI::Foo::V1_0::FooExtStub::FooExtStubTestFunc13_(MessageParcel& f
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (inDataSize > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: inData size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     for (uint32_t i = 0; i < inDataSize; ++i) {
         const char* key0Cp = fooExtData.ReadCString();
@@ -205,6 +209,10 @@ int32_t OHOS::HDI::Foo::V1_0::FooExtStub::FooExtStubTestFunc13_(MessageParcel& f
         return fooExtRet;
     }
 
+    if (outData.size() > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: outData size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!fooExtReply.WriteUint32(outData.size())) {
         HDF_LOGE("%{public}s: write outData failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

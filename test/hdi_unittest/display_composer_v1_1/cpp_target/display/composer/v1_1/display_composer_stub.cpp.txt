@@ -610,6 +610,10 @@ int32_t OHOS::HDI::Display::Composer::V1_1::DisplayComposerStub::DisplayComposer
         return displayComposerRet;
     }
 
+    if (keys.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: keys size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!displayComposerReply.WriteUint32(keys.size())) {
         HDF_LOGE("%{public}s: write keys size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

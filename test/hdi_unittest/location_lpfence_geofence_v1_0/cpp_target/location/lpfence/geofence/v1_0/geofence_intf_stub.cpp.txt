@@ -278,6 +278,10 @@ int32_t OHOS::HDI::Location::Lpfence::Geofence::V1_0::GeofenceIntfStub::Geofence
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (polygonGeofencesSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: polygonGeofences size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(polygonGeofencesSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Location::Lpfence::Geofence::V1_0::GeofencePolygonRequest), HDF_ERR_INVALID_PARAM);
     polygonGeofences.clear();

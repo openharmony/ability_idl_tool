@@ -177,6 +177,10 @@ bool ModelConfigBlockMarshalling(OHOS::MessageParcel& data, const OHOS::HDI::Nnr
         return false;
     }
 
+    if (dataBlock.extensions.size() > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: dataBlock.extensions size exceeds limit", __func__);
+        return false;
+    }
     if (!data.WriteUint32(dataBlock.extensions.size())) {
         HDF_LOGE("%{public}s: write dataBlock.extensions.size failed!", __func__);
         return false;
@@ -222,6 +226,10 @@ bool ModelConfigBlockUnmarshalling(OHOS::MessageParcel& data, OHOS::HDI::Nnrt::V
     uint32_t extensionsSize = 0;
     if (!data.ReadUint32(extensionsSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return false;
+    }
+    if (extensionsSize > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: extensions size exceeds limit", __func__);
         return false;
     }
 

@@ -224,6 +224,10 @@ int32_t OHOS::HDI::Light::V1_0::LightInterfaceProxy::GetLightInfo_(std::vector<O
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (infoSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: info size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(infoSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Light::V1_0::HdfLightInfo), HDF_ERR_INVALID_PARAM);
     info.clear();

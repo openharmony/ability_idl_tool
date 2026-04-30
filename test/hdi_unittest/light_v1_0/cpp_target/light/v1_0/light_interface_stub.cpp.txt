@@ -165,6 +165,10 @@ int32_t OHOS::HDI::Light::V1_0::LightInterfaceStub::LightInterfaceStubGetLightIn
         return lightInterfaceRet;
     }
 
+    if (info.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: info size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!lightInterfaceReply.WriteUint32(info.size())) {
         HDF_LOGE("%{public}s: write info size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

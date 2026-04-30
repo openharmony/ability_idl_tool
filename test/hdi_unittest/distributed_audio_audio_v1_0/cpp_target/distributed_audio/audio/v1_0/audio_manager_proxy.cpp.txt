@@ -203,6 +203,10 @@ int32_t OHOS::HDI::DistributedAudio::Audio::V1_0::AudioManagerProxy::GetAllAdapt
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (descsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: descs size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(descsSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::DistributedAudio::Audio::V1_0::AudioAdapterDescriptor), HDF_ERR_INVALID_PARAM);
     descs.clear();

@@ -128,6 +128,10 @@ bool MediaKeyRequestInfoBlockMarshalling(OHOS::MessageParcel& data, const OHOS::
         return false;
     }
 
+    if (dataBlock.optionalData.size() > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: dataBlock.optionalData size exceeds limit", __func__);
+        return false;
+    }
     if (!data.WriteUint32(dataBlock.optionalData.size())) {
         HDF_LOGE("%{public}s: write dataBlock.optionalData.size failed!", __func__);
         return false;
@@ -171,6 +175,10 @@ bool MediaKeyRequestInfoBlockUnmarshalling(OHOS::MessageParcel& data, OHOS::HDI:
     uint32_t optionalDataSize = 0;
     if (!data.ReadUint32(optionalDataSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return false;
+    }
+    if (optionalDataSize > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: optionalData size exceeds limit", __func__);
         return false;
     }
 

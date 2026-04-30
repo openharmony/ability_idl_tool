@@ -269,6 +269,10 @@ int32_t OHOS::HDI::DistributedCamera::V1_0::DCameraProviderCallbackStub::DCamera
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (captureInfosSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: captureInfos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(captureInfosSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::DistributedCamera::V1_0::DCCaptureInfo), HDF_ERR_INVALID_PARAM);
     captureInfos.clear();
@@ -346,6 +350,10 @@ int32_t OHOS::HDI::DistributedCamera::V1_0::DCameraProviderCallbackStub::DCamera
     uint32_t settingsSize = 0;
     if (!dCameraProviderCallbackData.ReadUint32(settingsSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (settingsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: settings size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 

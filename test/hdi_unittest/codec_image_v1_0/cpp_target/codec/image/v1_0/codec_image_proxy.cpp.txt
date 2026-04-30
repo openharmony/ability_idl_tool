@@ -211,6 +211,10 @@ int32_t OHOS::HDI::Codec::Image::V1_0::CodecImageProxy::GetImageCapability_(std:
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (capListSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: capList size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(capListSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Codec::Image::V1_0::CodecImageCapability), HDF_ERR_INVALID_PARAM);
     capList.clear();
