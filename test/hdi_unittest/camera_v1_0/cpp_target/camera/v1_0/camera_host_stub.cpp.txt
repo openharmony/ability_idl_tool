@@ -205,6 +205,10 @@ int32_t OHOS::HDI::Camera::V1_0::CameraHostStub::CameraHostStubGetCameraIds_(Mes
         return cameraHostRet;
     }
 
+    if (cameraIds.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: cameraIds size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!cameraHostReply.WriteUint32(cameraIds.size())) {
         HDF_LOGE("%{public}s: write cameraIds size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

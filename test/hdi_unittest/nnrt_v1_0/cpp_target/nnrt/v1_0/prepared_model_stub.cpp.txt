@@ -124,6 +124,10 @@ int32_t OHOS::HDI::Nnrt::V1_0::PreparedModelStub::PreparedModelStubExportModelCa
         return preparedModelRet;
     }
 
+    if (modelCache.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: modelCache size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!preparedModelReply.WriteUint32(modelCache.size())) {
         HDF_LOGE("%{public}s: write modelCache size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -156,6 +160,10 @@ int32_t OHOS::HDI::Nnrt::V1_0::PreparedModelStub::PreparedModelStubRun_(MessageP
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (inputsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: inputs size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(inputsSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Nnrt::V1_0::IOTensor), HDF_ERR_INVALID_PARAM);
     inputs.clear();
@@ -173,6 +181,10 @@ int32_t OHOS::HDI::Nnrt::V1_0::PreparedModelStub::PreparedModelStubRun_(MessageP
     uint32_t outputsSize = 0;
     if (!preparedModelData.ReadUint32(outputsSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (outputsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: outputs size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 
@@ -221,6 +233,10 @@ int32_t OHOS::HDI::Nnrt::V1_0::PreparedModelStub::PreparedModelStubRun_(MessageP
         return preparedModelRet;
     }
 
+    if (outputsDims.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: outputsDims size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!preparedModelReply.WriteUint32(outputsDims.size())) {
         HDF_LOGE("%{public}s: write outputsDims size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -232,6 +248,10 @@ int32_t OHOS::HDI::Nnrt::V1_0::PreparedModelStub::PreparedModelStubRun_(MessageP
         }
     }
 
+    if (isOutputBufferEnough.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: isOutputBufferEnough size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!preparedModelReply.WriteUint32(isOutputBufferEnough.size())) {
         HDF_LOGE("%{public}s: write isOutputBufferEnough size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

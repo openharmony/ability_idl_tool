@@ -151,6 +151,10 @@ int32_t OHOS::HDI::Drm::V1_0::MediaKeySessionCallbackStub::MediaKeySessionCallba
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (keyStatusSize > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: keyStatus size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     for (uint32_t i = 0; i < keyStatusSize; ++i) {
         std::vector<uint8_t> key0;

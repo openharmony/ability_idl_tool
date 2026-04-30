@@ -230,6 +230,10 @@ int32_t OHOS::HDI::Sensor::V1_0::SensorInterfaceProxy::GetAllSensorInfo_(std::ve
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (infoSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: info size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(infoSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Sensor::V1_0::HdfSensorInformation), HDF_ERR_INVALID_PARAM);
     info.clear();
@@ -537,6 +541,10 @@ int32_t OHOS::HDI::Sensor::V1_0::SensorInterfaceProxy::ReadData_(int32_t sensorI
     uint32_t eventSize = 0;
     if (!sensorInterfaceReply.ReadUint32(eventSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (eventSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: event size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 

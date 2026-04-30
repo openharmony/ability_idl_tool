@@ -1,1 +1,1 @@
-[IDL-GEN]: IFoo.idl:16:9:package name 'ohos.hdi.foo.v1_0' does not match file path '/mnt/data/w30051647/ohos_master/foundation/ability/idl_tool/test/hdi_unittest/hash_bad_04/foo/v1_0/IFoo.idl'
+[IDL-GEN]: IFoo.idl:16:9:package name 'ohos.hdi.foo.v1_0' does not match file path '/srv/workspace/hmos_trunk_vendor_general_8425L_hm_20260427_0127_huawei_bb34bd63c/code/foundation/ability/idl_tool/test/hdi_unittest/hash_bad_04/foo/v1_0/IFoo.idl'

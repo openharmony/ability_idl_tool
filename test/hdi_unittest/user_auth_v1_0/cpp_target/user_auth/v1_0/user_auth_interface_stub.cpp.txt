@@ -893,6 +893,10 @@ int32_t OHOS::HDI::UserAuth::V1_0::UserAuthInterfaceStub::UserAuthInterfaceStubB
         return userAuthInterfaceRet;
     }
 
+    if (scheduleInfos.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: scheduleInfos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!userAuthInterfaceReply.WriteUint32(scheduleInfos.size())) {
         HDF_LOGE("%{public}s: write scheduleInfos size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

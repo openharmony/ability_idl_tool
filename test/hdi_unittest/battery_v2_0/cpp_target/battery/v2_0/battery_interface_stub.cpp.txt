@@ -699,6 +699,10 @@ int32_t OHOS::HDI::Battery::V2_0::BatteryInterfaceStub::BatteryInterfaceStubSetC
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (chargingLimitSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: chargingLimit size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(chargingLimitSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Battery::V2_0::ChargingLimit), HDF_ERR_INVALID_PARAM);
     chargingLimit.clear();

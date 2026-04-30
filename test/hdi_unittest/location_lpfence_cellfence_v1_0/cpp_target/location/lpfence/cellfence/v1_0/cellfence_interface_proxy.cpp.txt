@@ -280,6 +280,10 @@ int32_t OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy::
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (cellfence.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: cellfence size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!cellfenceInterfaceData.WriteUint32(cellfence.size())) {
         HDF_LOGE("%{public}s: write cellfence size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

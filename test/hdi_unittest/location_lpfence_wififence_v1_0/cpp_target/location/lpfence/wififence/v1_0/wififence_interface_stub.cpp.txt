@@ -230,6 +230,10 @@ int32_t OHOS::HDI::Location::Lpfence::Wififence::V1_0::WififenceInterfaceStub::W
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (wififenceSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: wififence size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(wififenceSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Location::Lpfence::Wififence::V1_0::WififenceRequest), HDF_ERR_INVALID_PARAM);
     wififence.clear();

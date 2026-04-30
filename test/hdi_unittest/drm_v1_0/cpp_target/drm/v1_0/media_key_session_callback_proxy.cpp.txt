@@ -121,6 +121,10 @@ int32_t OHOS::HDI::Drm::V1_0::MediaKeySessionCallbackProxy::SendEventKeyChange_(
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (keyStatus.size() > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: keyStatus size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!mediaKeySessionCallbackData.WriteUint32(keyStatus.size())) {
         HDF_LOGE("%{public}s: write keyStatus failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
