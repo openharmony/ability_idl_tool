@@ -292,6 +292,10 @@ void HdiArrayTypeEmitter::EmitCppWriteVar(const std::string &parcelName, const s
         return;
     }
 
+    sb.Append(prefix).AppendFormat("if (%s.size() > HDI_VECTOR_MAX_SIZE) {\n", name.c_str());
+    sb.Append(prefix + TAB).AppendFormat("HDF_LOGE(\"%%{public}s: %s size exceeds limit\", __func__);\n", name.c_str());
+    sb.Append(prefix + TAB).Append("return HDF_ERR_INVALID_PARAM;\n");
+    sb.Append(prefix).Append("}\n");
     sb.Append(prefix).AppendFormat("if (!%s.WriteUint32(%s.size())) {\n", parcelName.c_str(), name.c_str());
     sb.Append(prefix + TAB).AppendFormat("HDF_LOGE(\"%%{public}s: write %s size failed!\", __func__);\n", name.c_str());
     sb.Append(prefix + TAB).Append("return HDF_ERR_INVALID_PARAM;\n");
@@ -334,6 +338,10 @@ void HdiArrayTypeEmitter::EmitCppReadVar(const std::string &name, StringBuilder 
     sb.Append(prefix).AppendFormat("uint32_t %sSize = 0;\n", name.c_str());
     sb.Append(prefix).AppendFormat("if (!%s.ReadUint32(%sSize)) {\n", parcelName.c_str(), name.c_str());
     sb.Append(prefix + TAB).Append("HDF_LOGE(\"%{public}s: failed to read size\", __func__);\n");
+    sb.Append(prefix + TAB).Append("return HDF_ERR_INVALID_PARAM;\n");
+    sb.Append(prefix).Append("}\n");
+    sb.Append(prefix).AppendFormat("if (%sSize > HDI_VECTOR_MAX_SIZE) {\n", name.c_str());
+    sb.Append(prefix + TAB).AppendFormat("HDF_LOGE(\"%%{public}s: %s size exceeds limit\", __func__);\n", name.c_str());
     sb.Append(prefix + TAB).Append("return HDF_ERR_INVALID_PARAM;\n");
     sb.Append(prefix).Append("}\n\n");
     sb.Append(prefix).AppendFormat("%s(%sSize, >, %s / sizeof(%s), HDF_ERR_INVALID_PARAM);\n",

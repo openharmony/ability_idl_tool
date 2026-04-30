@@ -384,6 +384,10 @@ int32_t OHOS::HDI::Nnrt::V2_0::NnrtDeviceStub::NnrtDeviceStubGetSupportedOperati
         return nnrtDeviceRet;
     }
 
+    if (ops.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: ops size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!nnrtDeviceReply.WriteUint32(ops.size())) {
         HDF_LOGE("%{public}s: write ops size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -596,6 +600,10 @@ int32_t OHOS::HDI::Nnrt::V2_0::NnrtDeviceStub::NnrtDeviceStubPrepareModelFromMod
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (modelCacheSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: modelCache size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(modelCacheSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::Nnrt::V2_0::SharedBuffer), HDF_ERR_INVALID_PARAM);
     modelCache.clear();
@@ -652,6 +660,10 @@ int32_t OHOS::HDI::Nnrt::V2_0::NnrtDeviceStub::NnrtDeviceStubPrepareOfflineModel
     uint32_t offlineModelsSize = 0;
     if (!nnrtDeviceData.ReadUint32(offlineModelsSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (offlineModelsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: offlineModels size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 

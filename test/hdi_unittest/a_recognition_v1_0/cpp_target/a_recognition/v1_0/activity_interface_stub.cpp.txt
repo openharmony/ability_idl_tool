@@ -251,6 +251,10 @@ int32_t OHOS::HDI::ARecognition::V1_0::ActivityInterfaceStub::ActivityInterfaceS
         return activityInterfaceRet;
     }
 
+    if (activity.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: activity size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!activityInterfaceReply.WriteUint32(activity.size())) {
         HDF_LOGE("%{public}s: write activity size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

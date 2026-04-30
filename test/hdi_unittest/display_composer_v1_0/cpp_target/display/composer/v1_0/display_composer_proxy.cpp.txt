@@ -917,6 +917,10 @@ int32_t OHOS::HDI::Display::Composer::V1_0::DisplayComposerProxy::GetDisplayRele
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (fencesSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: fences size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(fencesSize, >, HDI_BUFF_MAX_SIZE / sizeof(sptr<OHOS::HDI::Display::HdifdParcelable>), HDF_ERR_INVALID_PARAM);
     fences.clear();
@@ -1181,6 +1185,10 @@ int32_t OHOS::HDI::Display::Composer::V1_0::DisplayComposerProxy::CmdRequest_(ui
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (inFds.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: inFds size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!displayComposerData.WriteUint32(inFds.size())) {
         HDF_LOGE("%{public}s: write inFds size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -1211,6 +1219,10 @@ int32_t OHOS::HDI::Display::Composer::V1_0::DisplayComposerProxy::CmdRequest_(ui
     uint32_t outFdsSize = 0;
     if (!displayComposerReply.ReadUint32(outFdsSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (outFdsSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: outFds size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 

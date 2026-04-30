@@ -753,6 +753,10 @@ int32_t OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy::SetChargingLimit_(const
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (chargingLimit.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: chargingLimit size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!batteryInterfaceData.WriteUint32(chargingLimit.size())) {
         HDF_LOGE("%{public}s: write chargingLimit size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

@@ -292,6 +292,10 @@ int32_t OHOS::HDI::Drm::V1_0::MediaKeySessionStub::MediaKeySessionStubCheckMedia
         return mediaKeySessionRet;
     }
 
+    if (mediaKeyStatus.size() > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: mediaKeyStatus size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!mediaKeySessionReply.WriteUint32(mediaKeyStatus.size())) {
         HDF_LOGE("%{public}s: write mediaKeyStatus failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

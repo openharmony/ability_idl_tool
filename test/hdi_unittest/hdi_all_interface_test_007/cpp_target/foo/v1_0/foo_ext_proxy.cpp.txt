@@ -237,6 +237,10 @@ int32_t OHOS::HDI::Foo::V1_0::FooExtProxy::TestFunc13_(const std::map<std::strin
         return HDF_ERR_INVALID_PARAM;
     }
 
+    if (inData.size() > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: inData size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!fooExtData.WriteUint32(inData.size())) {
         HDF_LOGE("%{public}s: write inData failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
@@ -266,6 +270,10 @@ int32_t OHOS::HDI::Foo::V1_0::FooExtProxy::TestFunc13_(const std::map<std::strin
     uint32_t outDataSize = 0;
     if (!fooExtReply.ReadUint32(outDataSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (outDataSize > HDI_MAP_MAX_SIZE) {
+        HDF_LOGE("%{public}s: outData size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 

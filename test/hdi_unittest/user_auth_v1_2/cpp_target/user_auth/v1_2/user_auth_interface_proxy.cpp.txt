@@ -928,6 +928,10 @@ int32_t OHOS::HDI::UserAuth::V1_2::UserAuthInterfaceProxy::BeginAuthentication_(
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (scheduleInfosSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: scheduleInfos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(scheduleInfosSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::UserAuth::V1_2::ScheduleInfo), HDF_ERR_INVALID_PARAM);
     scheduleInfos.clear();
@@ -1320,6 +1324,10 @@ int32_t OHOS::HDI::UserAuth::V1_2::UserAuthInterfaceProxy::BeginAuthenticationV1
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (scheduleInfosSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: scheduleInfos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(scheduleInfosSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::UserAuth::V1_2::ScheduleInfoV1_1), HDF_ERR_INVALID_PARAM);
     scheduleInfos.clear();
@@ -1419,6 +1427,10 @@ int32_t OHOS::HDI::UserAuth::V1_2::UserAuthInterfaceProxy::GetAllUserInfo_(std::
         HDF_LOGE("%{public}s: failed to read size", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
+    if (userInfosSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: userInfos size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
 
     HDI_CHECK_VALUE_RETURN(userInfosSize, >, HDI_BUFF_MAX_SIZE / sizeof(OHOS::HDI::UserAuth::V1_2::UserInfo), HDF_ERR_INVALID_PARAM);
     userInfos.clear();
@@ -1465,6 +1477,10 @@ int32_t OHOS::HDI::UserAuth::V1_2::UserAuthInterfaceProxy::GetAllExtUserInfo_(st
     uint32_t userInfosSize = 0;
     if (!userAuthInterfaceReply.ReadUint32(userInfosSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (userInfosSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: userInfos size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 
@@ -1524,6 +1540,10 @@ int32_t OHOS::HDI::UserAuth::V1_2::UserAuthInterfaceProxy::BeginAuthenticationV1
     uint32_t scheduleInfosSize = 0;
     if (!userAuthInterfaceReply.ReadUint32(scheduleInfosSize)) {
         HDF_LOGE("%{public}s: failed to read size", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
+    if (scheduleInfosSize > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: scheduleInfos size exceeds limit", __func__);
         return HDF_ERR_INVALID_PARAM;
     }
 

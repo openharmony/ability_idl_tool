@@ -140,6 +140,10 @@ int32_t OHOS::HDI::DistributedAudio::Audio::V1_0::AudioManagerStub::AudioManager
         return audioManagerRet;
     }
 
+    if (descs.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: descs size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!audioManagerReply.WriteUint32(descs.size())) {
         HDF_LOGE("%{public}s: write descs size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;

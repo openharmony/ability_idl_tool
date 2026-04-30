@@ -175,6 +175,10 @@ int32_t OHOS::HDI::Camera::V1_2::ImageProcessSessionStub::ImageProcessSessionStu
         return imageProcessSessionRet;
     }
 
+    if (imageIds.size() > HDI_VECTOR_MAX_SIZE) {
+        HDF_LOGE("%{public}s: imageIds size exceeds limit", __func__);
+        return HDF_ERR_INVALID_PARAM;
+    }
     if (!imageProcessSessionReply.WriteUint32(imageIds.size())) {
         HDF_LOGE("%{public}s: write imageIds size failed!", __func__);
         return HDF_ERR_INVALID_PARAM;
