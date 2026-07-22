@@ -27,6 +27,7 @@ enum class IFooIpcCode {
     COMMAND_VOID_TEST_FUNC2,
     COMMAND_VOID_TEST_FUNC3,
     COMMAND_VOID_TEST_FUNC4,
+    COMMAND_VOID_TEST_FUNC5,
 };
 
 class IFoo : public IRemoteBroker {
@@ -40,6 +41,8 @@ public:
     virtual ErrCode void_test_func3() = 0;
 
     virtual ErrCode void_test_func4() = 0;
+
+    virtual ErrCode void_test_func5() = 0;
 protected:
     const int VECTOR_MAX_SIZE = 102400;
     const int LIST_MAX_SIZE = 102400;
