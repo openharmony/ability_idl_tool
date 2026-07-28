@@ -34,15 +34,18 @@ OpenHarmony  IDL接口描述语言主要用于：
 
 ```
 foundation/ability/idl_tool
-├── ast                         # idl语法解析定义代码
-├── codegen                     # 模板生成模块代码
-├── hash                        # hash生成模块代码
-├── lexer                       # 词法解析模块代码
-├── metadata                    # matedata自定义数据解析模块代码
-├── parser                      # 语法解析模块代码
-├── preprocessor                # 预处理模块代码
+├── idl_tool_2                  # idl工具主代码
+│   ├── ast                     # idl语法解析定义代码
+│   ├── codegen                 # 模板生成模块代码
+│   ├── hash                    # hash生成模块代码
+│   ├── lexer                   # 词法解析模块代码
+│   ├── metadata                # matedata自定义数据解析模块代码
+│   ├── parser                  # 语法解析模块代码
+│   ├── preprocessor            # 预处理模块代码
+│   ├── test                    # 测试目录
+│   └── util                    # 公共方法代码
 ├── test                        # 测试目录
-└── util                        # 公共方法代码
+└── BUILD.gn                    # 构建配置文件
 ```
 
 ## 开发步骤
