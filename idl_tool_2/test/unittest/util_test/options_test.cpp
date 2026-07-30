@@ -139,6 +139,7 @@ HWTEST_F(IdlTool2UtilOptionsTest, Options_test_004, Level1)
     EXPECT_EQ(file.ReadData(nullptr, 0), 0);
     int32_t count = 0;
     void* data = &count;
+    EXPECT_EQ(file.ReadData(data, INT16_MAX), false);
 }
 } // namespace idl
 } // namespace OHOS
