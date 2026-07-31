@@ -19,6 +19,23 @@
 
 namespace OHOS {
 namespace Idl {
+namespace {
+bool HasAsyncMessageOption(const std::string &option)
+{
+    const std::string asyncFlag = "MessageOption::TF_ASYNC";
+    size_t pos = option.find(asyncFlag);
+    while (pos != std::string::npos) {
+        size_t next = pos + asyncFlag.size();
+        if (next == option.size() || option[next] == ' ' || option[next] == '|' ||
+            option[next] == ',' || option[next] == ')') {
+            return true;
+        }
+        pos = option.find(asyncFlag, next);
+    }
+    return false;
+}
+}
+
 void SaCppClientProxyCodeEmitter::EmitCode()
 {
     SaTypeEmitter::circleCount_ = 0;
@@ -355,6 +372,9 @@ void SaCppClientProxyCodeEmitter::EmitInterfaceProxyMethodBody(AutoPtr<ASTMethod
     std::string option = "MessageOption::TF_SYNC";
     if (method->IsMessageOption()) {
         option = method->GetMessageOption();
+        if (method->IsOneWay() && !HasAsyncMessageOption(option)) {
+            option = "MessageOption::TF_ASYNC | " + option;
+        }
     } else if (method->IsOneWay()) {
         option = "MessageOption::TF_ASYNC";
     }

@@ -39,6 +39,8 @@ public:
 
     ErrCode void_test_func4() override;
 
+    ErrCode void_test_func5() override;
+
 private:
     static inline BrokerDelegator<FooProxy> delegator_;
     static constexpr size_t CAPACITY_VOID_TEST_FUNC4_4 = 10 << 10;

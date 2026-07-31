@@ -57,6 +57,13 @@ int32_t FooStub::OnRemoteRequest(
             }
             return ERR_NONE;
         }
+        case IFooIpcCode::COMMAND_VOID_TEST_FUNC5: {
+            ErrCode errCode = void_test_func5();
+            if (!reply.WriteInt32(errCode)) {
+                return ERR_INVALID_VALUE;
+            }
+            return ERR_NONE;
+        }
         default:
             return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
