@@ -289,4 +289,505 @@ HWTEST_F(SaCppClientProxyCodeEmitterTest, GetFilePathNoPoint_001, Level1)
     EXPECT_EQ(ret, "test::MySeq2");
     DTEST_LOG << "GetFilePathNoPoint_001 end" << std::endl;
 }
-} // namespace OHOS::idl
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_OnewayCustomMsgOptNoAsync_001
+ * @tc.desc: oneway + customMsgOption(without TF_ASYNC) should generate async option.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_OnewayCustomMsgOptNoAsync_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptNoAsync_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::ONEWAY | ASTAttr::CUSTOM_MSG_OPTION);
+    method->SetMessageOption("MessageOption::TF_ASYNC_WAKEUP_LATER");
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_ASYNC | MessageOption::TF_ASYNC_WAKEUP_LATER);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptNoAsync_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_OnewayCustomMsgOptHasAsync_001
+ * @tc.desc: oneway + customMsgOption(already has TF_ASYNC) should not duplicate async flag.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_OnewayCustomMsgOptHasAsync_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptHasAsync_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::ONEWAY | ASTAttr::CUSTOM_MSG_OPTION);
+    method->SetMessageOption("MessageOption::TF_ASYNC_WAKEUP_LATER | MessageOption::TF_ASYNC");
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_ASYNC_WAKEUP_LATER | MessageOption::TF_ASYNC);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptHasAsync_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_OnewayCustomMsgOptWaitTime_001
+ * @tc.desc: oneway + customMsgOption(no TF_ASYNC, with waitTime) should add async to flags only.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_OnewayCustomMsgOptWaitTime_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptWaitTime_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::ONEWAY | ASTAttr::CUSTOM_MSG_OPTION);
+    method->SetMessageOption("MessageOption::TF_ASYNC_WAKEUP_LATER, MessageOption::TF_WAIT_TIME");
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_ASYNC | MessageOption::TF_ASYNC_WAKEUP_LATER"
+        ", MessageOption::TF_WAIT_TIME);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptWaitTime_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_OnewayOnly_001
+ * @tc.desc: oneway only (no customMsgOption) should generate TF_ASYNC.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_OnewayOnly_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayOnly_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::ONEWAY);
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_ASYNC);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayOnly_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_DefaultSync_001
+ * @tc.desc: neither oneway nor customMsgOption should generate default TF_SYNC.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_DefaultSync_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_DefaultSync_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr();
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_SYNC);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "\n"
+        "    ErrCode errCode = reply.ReadInt32();\n"
+        "    if (FAILED(errCode)) {\n"
+        "        return errCode;\n"
+        "    }\n"
+        "\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_DefaultSync_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_CustomMsgOptOnlySync_001
+ * @tc.desc: customMsgOption(TF_SYNC) without oneway should use option as-is.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_CustomMsgOptOnlySync_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_CustomMsgOptOnlySync_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::CUSTOM_MSG_OPTION);
+    method->SetMessageOption("MessageOption::TF_SYNC");
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_SYNC);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "\n"
+        "    ErrCode errCode = reply.ReadInt32();\n"
+        "    if (FAILED(errCode)) {\n"
+        "        return errCode;\n"
+        "    }\n"
+        "\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_CustomMsgOptOnlySync_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncSpace_001
+ * @tc.desc: HasAsyncMessageOption boundary: TF_ASYNC followed by space.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncSpace_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncSpace_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::ONEWAY | ASTAttr::CUSTOM_MSG_OPTION);
+    method->SetMessageOption("MessageOption::TF_ASYNC | MessageOption::TF_ASYNC_WAKEUP_LATER");
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_ASYNC | MessageOption::TF_ASYNC_WAKEUP_LATER);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncSpace_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncComma_001
+ * @tc.desc: HasAsyncMessageOption boundary: TF_ASYNC followed by comma.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncComma_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncComma_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::ONEWAY | ASTAttr::CUSTOM_MSG_OPTION);
+    method->SetMessageOption("MessageOption::TF_ASYNC, MessageOption::TF_WAIT_TIME");
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_ASYNC, MessageOption::TF_WAIT_TIME);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncComma_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncPipe_001
+ * @tc.desc: HasAsyncMessageOption boundary: TF_ASYNC followed by pipe.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncPipe_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncPipe_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::ONEWAY | ASTAttr::CUSTOM_MSG_OPTION);
+    method->SetMessageOption("MessageOption::TF_ASYNC|MessageOption::TF_ASYNC_WAKEUP_LATER");
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_ASYNC|MessageOption::TF_ASYNC_WAKEUP_LATER);\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncPipe_001 end" << std::endl;
+}
+
+/*
+ * @tc.name: EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncParen_001
+ * @tc.desc: HasAsyncMessageOption boundary: TF_ASYNC followed by right paren.
+ * @tc.type: FUNC
+ */
+HWTEST_F(SaCppClientProxyCodeEmitterTest, EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncParen_001, Level1)
+{
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncParen_001 begin" << std::endl;
+    StringBuilder sb;
+    std::string prefix;
+    AutoPtr<SaCppClientProxyCodeEmitter> emitter = new SaCppClientProxyCodeEmitter;
+    emitter->logOn_ = false;
+    emitter->hitraceOn_ = false;
+    emitter->interface_ = new ASTInterfaceType();
+    emitter->interface_->SetName("IFoo");
+    emitter->SetOverloadName("");
+
+    AutoPtr<ASTMethod> method = new ASTMethod();
+    method->SetName("test_func");
+    method->SetReturnType(new ASTVoidType());
+    method->attr_ = new ASTAttr(ASTAttr::ONEWAY | ASTAttr::CUSTOM_MSG_OPTION);
+    method->SetMessageOption("MessageOption::TF_ASYNC)");
+
+    emitter->EmitInterfaceProxyMethodBody(method, sb, prefix);
+    std::string expectedCode =
+        "{\n"
+        "    MessageParcel data;\n"
+        "    MessageParcel reply;\n"
+        "    MessageOption option(MessageOption::TF_ASYNC));\n"
+        "\n"
+        "    if (!data.WriteInterfaceToken(GetDescriptor())) {\n"
+        "        return ERR_INVALID_VALUE;\n"
+        "    }\n"
+        "\n"
+        "    sptr<IRemoteObject> remote = Remote();\n"
+        "    if (!remote) {\n"
+        "        return ERR_INVALID_DATA;\n"
+        "    }\n"
+        "    int32_t result = remote->SendRequest(\n"
+        "        static_cast<uint32_t>(IFooIpcCode::COMMAND_TEST_FUNC), data, reply, option);\n"
+        "    if (FAILED(result)) {\n"
+        "        return result;\n"
+        "    }\n"
+        "    return ERR_OK;\n"
+        "}\n";
+    EXPECT_STREQ(sb.buffer_, expectedCode.c_str());
+    DTEST_LOG << "EmitInterfaceProxyMethodBody_OnewayCustomMsgOptAsyncParen_001 end" << std::endl;
+}
+} // namespace OHOS::Idl
