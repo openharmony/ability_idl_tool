@@ -84,14 +84,14 @@ sptr<OHOS::HDI::Bluetooth::Hci::V1_0::IHciInterface> OHOS::HDI::Bluetooth::Hci::
         return nullptr;
     }
 
-    sptr<OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy> proxy = new OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy(remote);
+    sptr<OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy> proxy = new (std::nothrow) OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy(remote);
     if (proxy == nullptr) {
         HDF_LOGE("%{public}s:iface_cast failed!", __func__);
         return nullptr;
     }
 
     proxy->servMgr_ = OHOS::HDI::hdi_objcast<IServiceManager>(servMgr);
-    proxy->deathRecipient_ = new OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy::IServiceManagerDeathRecipient(proxy);
+    proxy->deathRecipient_ = new (std::nothrow) OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy::IServiceManagerDeathRecipient(proxy);
     proxy->servMgr_->AddDeathRecipient(proxy->deathRecipient_);
     proxy->isReconnected_ = false;
     proxy->serviceName_ = serviceName;
@@ -142,7 +142,7 @@ int32_t OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy::Reconnect(
         return HDF_FAILURE;
     }
     proxy->servMgr_->AddDeathRecipient(
-        new OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy::IServiceManagerDeathRecipient(proxy));
+        new (std::nothrow) OHOS::HDI::Bluetooth::Hci::V1_0::HciInterfaceProxy::IServiceManagerDeathRecipient(proxy));
     proxy->isReconnected_ = true;
     return HDF_SUCCESS;
 }

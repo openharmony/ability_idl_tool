@@ -498,7 +498,7 @@ void CppClientProxyCodeEmitter::EmitGetInstanceMethodImpl(StringBuilder &sb, con
     sb.Append(prefix + TAB + TAB).Append("HDF_LOGE(\"%{public}s:get remote object failed!\", __func__);\n");
     sb.Append(prefix + TAB + TAB).Append("return nullptr;\n");
     sb.Append(prefix + TAB).Append("}\n\n");
-    sb.Append(prefix + TAB).AppendFormat("sptr<%s> %s = new %s(remote);\n",
+    sb.Append(prefix + TAB).AppendFormat("sptr<%s> %s = new (std::nothrow) %s(remote);\n",
         EmitDefinitionByInterface(interface_, proxyName_).c_str(), objName.c_str(),
         (interfaceNamespace +
         (StringHelper::StartWith(interfaceName_, "I") ? interfaceName_.substr(1) : interfaceName_) +
@@ -517,7 +517,7 @@ void CppClientProxyCodeEmitter::EmitGetInstanceMethodInitProxyImpl(StringBuilder
     std::string serMinorName = "serMinorVer";
     sb.Append(prefix + TAB).AppendFormat("%s->servMgr_ = ", objName.c_str());
     sb.Append("OHOS::HDI::hdi_objcast<IServiceManager>(servMgr);\n");
-    sb.Append(prefix + TAB).AppendFormat("%s->deathRecipient_ = new %s::%s(%s);\n", objName.c_str(),
+    sb.Append(prefix + TAB).AppendFormat("%s->deathRecipient_ = new (std::nothrow) %s::%s(%s);\n", objName.c_str(),
         EmitDefinitionByInterface(interface_, proxyName_).c_str(),
         devmgrDeathRecipientName_.c_str(), objName.c_str());
     sb.Append(prefix + TAB).AppendFormat("%s->servMgr_->AddDeathRecipient(%s->deathRecipient_);\n",
@@ -590,7 +590,7 @@ void CppClientProxyCodeEmitter::EmitProxyCppReconnectMethodImpl(StringBuilder &s
     sb.Append(doubleTab + TAB).Append("return HDF_FAILURE;\n");
     sb.Append(doubleTab).Append("}\n");
     sb.Append(doubleTab).Append("proxy->servMgr_->AddDeathRecipient(\n");
-    sb.Append(doubleTab + TAB).AppendFormat("new %s::%s(proxy));\n",
+    sb.Append(doubleTab + TAB).AppendFormat("new (std::nothrow) %s::%s(proxy));\n",
         EmitDefinitionByInterface(interface_, proxyName_).c_str(), devmgrDeathRecipientName_.c_str());
     sb.Append(doubleTab).Append("proxy->isReconnected_ = true;\n");
     sb.Append(doubleTab).Append("return HDF_SUCCESS;\n");
