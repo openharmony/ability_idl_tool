@@ -81,14 +81,14 @@ sptr<OHOS::HDI::Battery::V1_1::IBatteryInterface> OHOS::HDI::Battery::V1_1::IBat
         return nullptr;
     }
 
-    sptr<OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy> proxy = new OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy(remote);
+    sptr<OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy> proxy = new (std::nothrow) OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy(remote);
     if (proxy == nullptr) {
         HDF_LOGE("%{public}s:iface_cast failed!", __func__);
         return nullptr;
     }
 
     proxy->servMgr_ = OHOS::HDI::hdi_objcast<IServiceManager>(servMgr);
-    proxy->deathRecipient_ = new OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy::IServiceManagerDeathRecipient(proxy);
+    proxy->deathRecipient_ = new (std::nothrow) OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy::IServiceManagerDeathRecipient(proxy);
     proxy->servMgr_->AddDeathRecipient(proxy->deathRecipient_);
     proxy->isReconnected_ = false;
     proxy->serviceName_ = serviceName;
@@ -139,7 +139,7 @@ int32_t OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy::Reconnect(
         return HDF_FAILURE;
     }
     proxy->servMgr_->AddDeathRecipient(
-        new OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy::IServiceManagerDeathRecipient(proxy));
+        new (std::nothrow) OHOS::HDI::Battery::V1_1::BatteryInterfaceProxy::IServiceManagerDeathRecipient(proxy));
     proxy->isReconnected_ = true;
     return HDF_SUCCESS;
 }

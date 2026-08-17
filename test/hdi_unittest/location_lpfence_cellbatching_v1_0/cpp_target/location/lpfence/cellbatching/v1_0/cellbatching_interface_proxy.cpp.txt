@@ -83,14 +83,14 @@ sptr<OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::ICellbatchingInterface> O
         return nullptr;
     }
 
-    sptr<OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceProxy> proxy = new OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceProxy(remote);
+    sptr<OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceProxy> proxy = new (std::nothrow) OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceProxy(remote);
     if (proxy == nullptr) {
         HDF_LOGE("%{public}s:iface_cast failed!", __func__);
         return nullptr;
     }
 
     proxy->servMgr_ = OHOS::HDI::hdi_objcast<IServiceManager>(servMgr);
-    proxy->deathRecipient_ = new OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceProxy::IServiceManagerDeathRecipient(proxy);
+    proxy->deathRecipient_ = new (std::nothrow) OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceProxy::IServiceManagerDeathRecipient(proxy);
     proxy->servMgr_->AddDeathRecipient(proxy->deathRecipient_);
     proxy->isReconnected_ = false;
     proxy->serviceName_ = serviceName;
@@ -141,7 +141,7 @@ int32_t OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceP
         return HDF_FAILURE;
     }
     proxy->servMgr_->AddDeathRecipient(
-        new OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceProxy::IServiceManagerDeathRecipient(proxy));
+        new (std::nothrow) OHOS::HDI::Location::Lpfence::Cellbatching::V1_0::CellbatchingInterfaceProxy::IServiceManagerDeathRecipient(proxy));
     proxy->isReconnected_ = true;
     return HDF_SUCCESS;
 }
