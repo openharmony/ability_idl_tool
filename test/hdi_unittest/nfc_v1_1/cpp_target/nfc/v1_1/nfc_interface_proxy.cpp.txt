@@ -131,14 +131,14 @@ sptr<OHOS::HDI::Nfc::V1_1::INfcInterface> OHOS::HDI::Nfc::V1_1::INfcInterface::G
         return nullptr;
     }
 
-    sptr<OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy> proxy = new OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy(remote);
+    sptr<OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy> proxy = new (std::nothrow) OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy(remote);
     if (proxy == nullptr) {
         HDF_LOGE("%{public}s:iface_cast failed!", __func__);
         return nullptr;
     }
 
     proxy->servMgr_ = OHOS::HDI::hdi_objcast<IServiceManager>(servMgr);
-    proxy->deathRecipient_ = new OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy::IServiceManagerDeathRecipient(proxy);
+    proxy->deathRecipient_ = new (std::nothrow) OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy::IServiceManagerDeathRecipient(proxy);
     proxy->servMgr_->AddDeathRecipient(proxy->deathRecipient_);
     proxy->isReconnected_ = false;
     proxy->serviceName_ = serviceName;
@@ -189,7 +189,7 @@ int32_t OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy::Reconnect(
         return HDF_FAILURE;
     }
     proxy->servMgr_->AddDeathRecipient(
-        new OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy::IServiceManagerDeathRecipient(proxy));
+        new (std::nothrow) OHOS::HDI::Nfc::V1_1::NfcInterfaceProxy::IServiceManagerDeathRecipient(proxy));
     proxy->isReconnected_ = true;
     return HDF_SUCCESS;
 }

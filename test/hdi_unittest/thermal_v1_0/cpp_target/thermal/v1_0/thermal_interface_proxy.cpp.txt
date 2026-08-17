@@ -81,14 +81,14 @@ sptr<OHOS::HDI::Thermal::V1_0::IThermalInterface> OHOS::HDI::Thermal::V1_0::IThe
         return nullptr;
     }
 
-    sptr<OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy> proxy = new OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy(remote);
+    sptr<OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy> proxy = new (std::nothrow) OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy(remote);
     if (proxy == nullptr) {
         HDF_LOGE("%{public}s:iface_cast failed!", __func__);
         return nullptr;
     }
 
     proxy->servMgr_ = OHOS::HDI::hdi_objcast<IServiceManager>(servMgr);
-    proxy->deathRecipient_ = new OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy::IServiceManagerDeathRecipient(proxy);
+    proxy->deathRecipient_ = new (std::nothrow) OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy::IServiceManagerDeathRecipient(proxy);
     proxy->servMgr_->AddDeathRecipient(proxy->deathRecipient_);
     proxy->isReconnected_ = false;
     proxy->serviceName_ = serviceName;
@@ -139,7 +139,7 @@ int32_t OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy::Reconnect(
         return HDF_FAILURE;
     }
     proxy->servMgr_->AddDeathRecipient(
-        new OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy::IServiceManagerDeathRecipient(proxy));
+        new (std::nothrow) OHOS::HDI::Thermal::V1_0::ThermalInterfaceProxy::IServiceManagerDeathRecipient(proxy));
     proxy->isReconnected_ = true;
     return HDF_SUCCESS;
 }

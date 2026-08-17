@@ -85,14 +85,14 @@ sptr<OHOS::HDI::Location::Lpfence::Cellfence::V1_0::ICellfenceInterface> OHOS::H
         return nullptr;
     }
 
-    sptr<OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy> proxy = new OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy(remote);
+    sptr<OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy> proxy = new (std::nothrow) OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy(remote);
     if (proxy == nullptr) {
         HDF_LOGE("%{public}s:iface_cast failed!", __func__);
         return nullptr;
     }
 
     proxy->servMgr_ = OHOS::HDI::hdi_objcast<IServiceManager>(servMgr);
-    proxy->deathRecipient_ = new OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy::IServiceManagerDeathRecipient(proxy);
+    proxy->deathRecipient_ = new (std::nothrow) OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy::IServiceManagerDeathRecipient(proxy);
     proxy->servMgr_->AddDeathRecipient(proxy->deathRecipient_);
     proxy->isReconnected_ = false;
     proxy->serviceName_ = serviceName;
@@ -143,7 +143,7 @@ int32_t OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy::
         return HDF_FAILURE;
     }
     proxy->servMgr_->AddDeathRecipient(
-        new OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy::IServiceManagerDeathRecipient(proxy));
+        new (std::nothrow) OHOS::HDI::Location::Lpfence::Cellfence::V1_0::CellfenceInterfaceProxy::IServiceManagerDeathRecipient(proxy));
     proxy->isReconnected_ = true;
     return HDF_SUCCESS;
 }

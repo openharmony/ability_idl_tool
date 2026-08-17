@@ -85,14 +85,14 @@ sptr<OHOS::HDI::Display::Buffer::V1_1::IMetadata> OHOS::HDI::Display::Buffer::V1
         return nullptr;
     }
 
-    sptr<OHOS::HDI::Display::Buffer::V1_1::MetadataProxy> proxy = new OHOS::HDI::Display::Buffer::V1_1::MetadataProxy(remote);
+    sptr<OHOS::HDI::Display::Buffer::V1_1::MetadataProxy> proxy = new (std::nothrow) OHOS::HDI::Display::Buffer::V1_1::MetadataProxy(remote);
     if (proxy == nullptr) {
         HDF_LOGE("%{public}s:iface_cast failed!", __func__);
         return nullptr;
     }
 
     proxy->servMgr_ = OHOS::HDI::hdi_objcast<IServiceManager>(servMgr);
-    proxy->deathRecipient_ = new OHOS::HDI::Display::Buffer::V1_1::MetadataProxy::IServiceManagerDeathRecipient(proxy);
+    proxy->deathRecipient_ = new (std::nothrow) OHOS::HDI::Display::Buffer::V1_1::MetadataProxy::IServiceManagerDeathRecipient(proxy);
     proxy->servMgr_->AddDeathRecipient(proxy->deathRecipient_);
     proxy->isReconnected_ = false;
     proxy->serviceName_ = serviceName;
@@ -143,7 +143,7 @@ int32_t OHOS::HDI::Display::Buffer::V1_1::MetadataProxy::Reconnect(
         return HDF_FAILURE;
     }
     proxy->servMgr_->AddDeathRecipient(
-        new OHOS::HDI::Display::Buffer::V1_1::MetadataProxy::IServiceManagerDeathRecipient(proxy));
+        new (std::nothrow) OHOS::HDI::Display::Buffer::V1_1::MetadataProxy::IServiceManagerDeathRecipient(proxy));
     proxy->isReconnected_ = true;
     return HDF_SUCCESS;
 }
