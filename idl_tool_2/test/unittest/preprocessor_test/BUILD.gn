@@ -273,7 +273,10 @@ ohos_unittest("IdlTool2PreprocessorTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
