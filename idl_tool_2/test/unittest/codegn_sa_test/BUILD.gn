@@ -42,7 +42,10 @@ ohos_unittest("CodeSaEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
