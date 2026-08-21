@@ -72,7 +72,10 @@ ohos_unittest("SaArrayTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -88,7 +91,10 @@ ohos_unittest("SaBooleanTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -104,7 +110,10 @@ ohos_unittest("SaByteTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -120,7 +129,10 @@ ohos_unittest("SaCharTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -136,7 +148,10 @@ ohos_unittest("SaCStringTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -152,7 +167,10 @@ ohos_unittest("SaDoubleTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -168,7 +186,10 @@ ohos_unittest("SaFdTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -184,7 +205,10 @@ ohos_unittest("SaFdSanTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -200,7 +224,10 @@ ohos_unittest("SaFloatTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -216,7 +243,10 @@ ohos_unittest("SaIntTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -234,7 +264,10 @@ ohos_unittest("SaLongTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -250,7 +283,10 @@ ohos_unittest("SaUshortTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -268,7 +304,10 @@ ohos_unittest("SaSeqTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -284,7 +323,10 @@ ohos_unittest("SaStructTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -300,7 +342,10 @@ ohos_unittest("SaUnionTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -319,7 +364,10 @@ ohos_unittest("SaEnumTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -335,7 +383,10 @@ ohos_unittest("SaUlongTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -351,7 +402,10 @@ ohos_unittest("SaUintTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -367,7 +421,10 @@ ohos_unittest("SaUcharTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -383,7 +440,10 @@ ohos_unittest("SaU16stringTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -399,7 +459,10 @@ ohos_unittest("SaStringTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -415,7 +478,10 @@ ohos_unittest("SaShortTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -433,7 +499,10 @@ ohos_unittest("SaSetTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -451,7 +520,10 @@ ohos_unittest("SaMapTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -469,7 +541,10 @@ ohos_unittest("SaOrderedMapTypeEmitterTest") {
 
   deps = []
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -485,7 +560,10 @@ ohos_unittest("SaInterfaceTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -501,7 +579,10 @@ ohos_unittest("SaPtrTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
@@ -517,7 +598,10 @@ ohos_unittest("SaRawDataTypeEmitterTest") {
 
   defines = [ "IDLTOOL_GTEST" ]
 
-  external_deps = [ "c_utils:utils" ]
+  external_deps = [
+    "bounds_checking_function:libsec_shared",
+    "c_utils:utils",
+  ]
 
   part_name = "idl_tool"
   subsystem_name = "ability"
